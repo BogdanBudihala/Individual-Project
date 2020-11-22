@@ -2,7 +2,7 @@
 Sourcecode for the "Workmate" Desktop application
 
 Contains:
-# -Node.js modules, particularly Electron
+# -Node.js startup files (main.js, package.json, etc.)
 # -Python Virtual Environment and sourcecode
 # -GUI elements (templates, javascript sourcecode, css styling, graphical elements, etc.)
 
