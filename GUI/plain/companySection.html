@@ -1,0 +1,32 @@
+<div class="companySectionContainer" align="center">
+  <div class="companySetionImageArea">
+    <img id="companySectionCompanyImage" src="../graphics/Company.svg">
+  </div>
+  <div class="companySectionContent">
+    <div class="companySectionTitleArea">
+      <span>You may register a company by filling out the following <b>form</b></span>
+    </div>
+    <div class="companySectionInputArea">
+      <div class="companySectionEntryFormArea">
+        <form style="height: 100%; position: relative;" spellcheck="false" id="companySectionForm">
+          <input id="companySectionTitle" class="companySectionRegisterEntry companySectionEntries" type="text"
+            placeholder="Company Title" required minlength="3" maxlength="30">
+          <input id="companySectionIdentifier" class="companySectionRegisterEntry companySectionEntries" type="text"
+            placeholder="Unique Identifier" required minlength="3" maxlength="10" pattern="([a-zA-Z0-9]+[\._-]{0,1})+[a-zA-Z0-9]+">
+          <input id="companySectionLocation" class="companySectionRegisterEntry companySectionEntries" type="text" placeholder="Operating Location"
+            required minlength="3" maxlength="30">
+          <div class="companySectionRemoteContainer">
+            <button id="companySectionCheckBoxButton" type="button" class="checkBoxButton"
+              value=0 onclick="changeCheckBoxValue(this)"></button>
+            <span>Remote</span>
+          </div>
+          <textarea spellcheck="false" id="companySectionDescription" class="companySectionTextArea companySectionEntries" required minlength="100"
+          placeholder="Brief Description" maxlength="350"></textarea>
+        </form>
+      </div>
+      <div align="center" style="margin-top: 2.5%">
+        <button class="generalSubmitButton" type="button" onClick="validateCompanySectionEntries(submitCompanySectionEntries)">Register</button>
+      </div>
+    </div>
+  </div>
+</div>
