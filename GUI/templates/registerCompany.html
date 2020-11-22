@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+   <meta charset="utf-8"/>
+   <link href="../styling/generalStyle.css" rel="stylesheet" type="text/css" />
+    <link href="../styling/registerCompanyStyle.css" rel="stylesheet" type="text/css" />
+    <script src='https://code.jquery.com/jquery-3.1.0.min.js'></script>
+    <script type='text/javascript' src='https://code.jquery.com/jquery-3.1.0.min.js'></script>
+    <link href="http://fonts.googleapis.com/css?family=Corben" rel="stylesheet" type="text/css">
+
+
+</head>
+<body>
+<img src="../graphics/mountains.jpg" class="mountainsImage">
+    <div class="container">
+        <div class="displayArea">
+          <div class="screen">
+            <div class="splitside">
+              <div class="textArea">
+                <span id="greetingSpan"></span>
+                <span>It appears that you have not <b>yet</b> registered a company.
+                  <br>You may register one by filling out the following <b>form</b></span>
+              </div>
+              <div class="imageArea">
+                <img src="../graphics/worker.svg" class="workerImage">
+              </div>
+              <div class="alertContainer">
+                <div class="alert" id="alertBox">
+                  <button class="closeAlertButton" type="button" onclick="this.parentElement.style.display='none';">
+                    <span class="closeSpan">✘</span>
+                  </button>
+                  <span id="errorMsg"></span>
+                </div>
+              </div>
+            </div>
+          <div class="splitside">
+            <div class="entryArea" id="companyRegisterPanel">
+              <div class="entryTitleArea">
+              <span class="entryTitleSpan">Company information</span>
+              </div>
+              <div class="entryFormArea">
+                <form style="height: 100%; position: relative;" spellcheck="false" id="companyForm">
+                  <input id="compTitle" class="companyRegisterEntry" type="text" placeholder="Company Title" required minlength="3" maxlength="30">
+                  <input id="compIdentifier" class="companyRegisterEntry" type="text" placeholder="Unique Identifier" required minlength="3" maxlength="10"
+                  pattern="([a-zA-Z0-9]+[\._-]{0,1})+[a-zA-Z0-9]+">
+                  <input id="compLocation" class="companyRegisterEntry" type="text" placeholder="Operating Location" required minlength="3" maxlength="30">
+                  <button id="checkBoxBtnID" type="button" class="checkBoxButton" value=0 onclick="changeCheckBoxValue(this)"></button>
+                  <span id="remoteSpan">Remote</span>
+                  <textarea spellcheck="false" id="compDescription" class="textAreaInput companyRegisterEntry" required minlength="100"
+                  placeholder="Brief Description" maxlength="350"></textarea>
+              </form>
+              </div>
+            </div>
+            <div class="entryArea" id="employeeRegisterPanel" style="left: 100%;">
+              <div class="entryTitleArea">
+              <span class="entryTitleSpan">Employer profile</span>
+              </div>
+              <div class="entryFormArea">
+                <form style="height: 100%; position: relative;" spellcheck="false" id="employeeForm">
+                  <input id="empFirst" class="employeeRegisterEntry" type="text" placeholder="First Name" required minlength="3" maxlength="30">
+                  <input id="empLast" class="employeeRegisterEntry" type="text" placeholder="Last Name" required minlength="3" maxlength="30">
+                  <input id="empCity" class="employeeRegisterEntry" type="text" placeholder="City" required minlength="3" maxlength="30">
+                  <input id="empCountry" class="employeeRegisterEntry" type="text" placeholder="State/Province" required minlength="3" maxlength="30">
+                  <textarea id="employeeAddress" placeholder="Address" required minlength="10"
+                  class="textAreaInput employeeRegisterEntry" maxlength="100"></textarea>
+              </form>
+            </div>
+          </div>
+          <div class="arrowArea">
+            <button type="button" class="arrowButton" onClick="validateEntries(0, () => {scrollWindow(true)})" style="float: right;">
+              <img src="../graphics/arrow.png" class="arrowImage"></button>
+            <button type="button" class="arrowButton" onClick="scrollWindow(false)" style="float: left; margin-left: 10%" disabled>
+              <img src="../graphics/arrowreversed.png" class="arrowImage"></button>
+            <button type="button" id="submitCompanyRegister" onClick="validateEntries(1, () => {submitEntries(0)})">Register</button>
+          </div>
+          </div>
+       </div>
+    </div>
+    <script src="../sourcecode/GeneralScript.js"></script>
+    <script src="../sourcecode/Controlbar.js"></script>
+    <script src="../sourcecode/registerCompanySource.js"></script>
+</body>
+</html>

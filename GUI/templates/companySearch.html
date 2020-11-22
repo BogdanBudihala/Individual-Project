@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+   <meta charset="utf-8"/>
+   <link href="../styling/generalStyle.css" rel="stylesheet" type="text/css" />
+    <link href="../styling/companySearchStyle.css" rel="stylesheet" type="text/css" />
+    <script src='https://code.jquery.com/jquery-3.1.0.min.js'></script>
+    <script type='text/javascript' src='https://code.jquery.com/jquery-3.1.0.min.js'></script>
+    <link href="http://fonts.googleapis.com/css?family=Corben" rel="stylesheet" type="text/css">
+
+</head>
+<body>
+<img src="../graphics/mountains.jpg" class="mountainsImage">
+<div class="container">
+  <div class="toolbar">
+      <div class="functionalToolbar" onMouseLeave="activateTransition(document.getElementById('toggleMovementDiv').value)">
+        <div class="toggleMovement" id="toggleMovementDiv"></div>
+          <button class="toggleButton" type="button" onMouseOver="activateTransition('0%')" onClick="beginWindowLoadingByType(0)">
+            Home<img src="../graphics/home.png" class="sliderIcon"></button>
+          <button class="toggleButton" style="left: 20%" type="button" onMouseOver="activateTransition('20%')"  onClick="beginWindowLoadingByType(1)">
+            Company<img src="../graphics/suitcase.png" class="sliderIcon"></button>
+          <button class="toggleButton" type="button" style="left: 40%" onMouseOver="activateTransition('40%')"  onClick="beginWindowLoadingByType(2)">
+            Search<img src="../graphics/magnifier.png" class="sliderIcon"></button>
+          <button class="toggleButton" type="button" style="left: 60%" onMouseOver="activateTransition('60%')"  onClick="beginWindowLoadingByType(3)">
+            Account<img src="../graphics/networking.png" class="sliderIcon"></button>
+          <button class="toggleButton" type="button" style="left: 80%" onMouseOver="activateTransition('80%')"  onClick="beginWindowLoadingByType(4)">
+            Settings<img src="../graphics/settings.png" class="sliderIcon"></button>
+      </div>
+      <div class="marginDiv" style="float: right; margin-left: 15%;">
+        <button id="avatarHolder" type="button"><img id="avatarImage" src="../graphics/user.png" style="width: 100%; height: 100%"></button>
+      </div>
+  </div>
+  <div class="displayArea">
+    <div class="screen" id="mainScreen">
+    </div>
+  </div>
+  <div id="alertContainer" align="center" style="width: 50%; left: .5%; bottom: 5%">
+    <div class="alert" id="alertBox">
+      <button class="closeAlertButton" type="button" onclick="this.parentElement.parentElement.style.display='none';" align="center">
+        <span class="closeSpan">✘</span>
+      </button>
+      <span id="errorMsg"></span>
+    </div>
+  </div>
+</div>
+<script src="../sourcecode/GeneralScript.js"></script>
+<script src="../sourcecode/Controlbar.js"></script>
+<script src="../sourcecode/companySearchSource.js"></script>
+</body>
+</html>

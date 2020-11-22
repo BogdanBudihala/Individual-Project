@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+   <meta charset="utf-8"/>
+   <link href="../styling/generalStyle.css" rel="stylesheet" type="text/css" />
+    <link href="../styling/registerWorkerStyle.css" rel="stylesheet" type="text/css" />
+    <script src='https://code.jquery.com/jquery-3.1.0.min.js'></script>
+    <script type='text/javascript' src='https://code.jquery.com/jquery-3.1.0.min.js'></script>
+    <link href="http://fonts.googleapis.com/css?family=Corben" rel="stylesheet" type="text/css">
+
+</head>
+<body>
+<img src="../graphics/mountains.jpg" class="mountainsImage">
+<div class="container">
+    <div class="displayArea">
+      <div class="screen">
+        <div class="splitside" style="margin-left: 25%">
+          <div class="textArea">
+            <span id="greetingSpan"></span>
+            <span><br>Before you proceed further, you must register a worker profile. You may update the details later on.
+              Press the button below to load the registration form.</span>
+            <button type="button" class="arrowButton" value=0 onClick="expandWindow(this.value)">
+              <img src="../graphics/arrow.png" class="arrowImage"></button>
+          </div>
+          <div class="imageArea">
+            <img src="../graphics/worker.svg" class="workerImage">
+          </div>
+        </div>
+      <div class="splitside" style="display: none">
+        <div class="entryArea" id="workerRegisterPanel">
+          <div class="entryTitleArea">
+          <span class="entryTitleSpan">Worker profile</span>
+          </div>
+          <div class="entryFormArea" align="center">
+            <form style="height: 100%; position: relative;" spellcheck="false" id="workerForm">
+              <input id="workerFirst" class="workerRegisterEntry" type="text" placeholder="First Name" required minlength="3" maxlength="30"
+                pattern="([a-zA-Z]+[\. -]{0,1})+[a-zA-Z]+">
+              <input id="workerLast" class="workerRegisterEntry" type="text" placeholder="Last Name" required minlength="3" maxlength="30"
+               pattern="([a-zA-Z]+[\. -]{0,1})+[a-zA-Z]+">
+              <input id="workerCity" class="workerRegisterEntry" type="text" placeholder="City" required minlength="3" maxlength="30"
+               pattern="([a-zA-Z]+[\. -]{0,1})+[a-zA-Z]+">
+              <input id="workerCountry" class="workerRegisterEntry" type="text" placeholder="State/Province" required minlength="3" maxlength="30"
+               pattern="([a-zA-Z]+[\. -]{0,1})+[a-zA-Z]+">
+              <textarea id="workerAddress" placeholder="Address" required minlength="10"
+              class="textAreaInput workerRegisterEntry" maxlength="100"></textarea>
+          </form>
+        </div>
+      </div>
+      <div class="submitArea" align="center">
+          <button class="generalSubmitButton" type="button" id="submitWorkerRegister" onClick="validateEntries(submitEntries)">Register</button>
+      </div>
+      </div>
+      <div id="alertContainer" align="center" style="width: 35%; right: 25%; bottom: 5%;">
+        <div class="alert" id="alertBox">
+          <button class="closeAlertButton" type="button" onclick="this.parentElement.parentElement.style.display='none';" align="center">
+            <span class="closeSpan">✘</span>
+          </button>
+          <span id="errorMsg"></span>
+        </div>
+      </div>
+   </div>
+</div>
+</div>
+<script src="../sourcecode/GeneralScript.js"></script>
+<script src="../sourcecode/Controlbar.js"></script>
+<script src="../sourcecode/registerWorkerSource.js"></script>
+</body>
+</html>

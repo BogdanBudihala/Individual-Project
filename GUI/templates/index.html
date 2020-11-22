@@ -1,1 +1,78 @@
+﻿<!DOCTYPE html>
 
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <link href="../styling/generalStyle.css" rel="stylesheet" type="text/css" />
+    <link href="../styling/authStyle.css" rel="stylesheet" type="text/css" />
+    <script src='https://code.jquery.com/jquery-3.1.0.min.js'></script>
+    <script type='text/javascript' src='https://code.jquery.com/jquery-3.1.0.min.js'></script>
+    <link href="http://fonts.googleapis.com/css?family=Corben" rel="stylesheet" type="text/css">
+</head>
+<body>
+  <img src="../graphics/mountains.jpg" class="mountainsImage">
+    <div class="container">
+        <div class="splitside">
+          <img src="../graphics/worker.svg" style="margin-top: 30%;height: 50%;">
+        </div>
+        <div class="splitside">
+            <div class="topInput">
+            </div>
+            <div class="midInput" onMouseLeave="activateTransition(document.getElementById('toggleMovementDiv').value)">
+              <div class="toggleMovement" id="toggleMovementDiv"></div>
+              <button class="toggleButton" id="toggleLoginButton" type="button" onclick="changeWindow(0)" onMouseOver="activateTransition('0%')">
+                Log in<img src="../graphics/login.png" class="sliderIcon"></button>
+              <button class="toggleButton" id="toggleRegisterButton" type="button" onclick="changeWindow(1)" onMouseOver="activateTransition('33.3%')">
+                Register<img src="../graphics/register.png" class="sliderIcon"></button>
+              <button class="toggleButton" id="toggleResetButton" type="button" onclick="changeWindow(2)" onMouseOver="activateTransition('66.6%')">
+                Reset<img src="../graphics/reset.png" class="sliderIcon"></button>
+            </div>
+            <div class="bottomInput" id="loginPanel">
+                <form id="loginForm" style="margin-top: 15%;">
+                  <input id="loginUser" class="entryField loginEntry" type="text" placeholder="Username" required maxlength="30">
+                  <input id="loginPassword" class="entryField loginEntry" type="password" placeholder="Password" required maxlength="30">
+
+                </form>
+                <div class="submitButtonHolder" align="center">
+                  <button id="loginSubmit" class="submitButton generalSubmitButton" type="button" onclick="submitEntries(0)">Log in</button>
+                </div>
+            </div>
+            <div class="bottomInput" id="registerPanel" style="height: 60%">
+              <form id="registerForm">
+                <input id="registerUser" class="entryField registerEntry" type="text" placeholder="Username" required minlength="5" maxlength="30"
+                name="text" pattern="([a-zA-Z0-9]+[\._-]{0,1})+[a-zA-Z0-9]+">
+                <input id="registerEmail" class="entryField registerEntry" type="text" placeholder="Email Address" required
+                name="email" minlength="8" maxlength="50" pattern="^[a-zA-Z0-9._%+-]+@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$">
+                <input id="registerPassword" class="entryField registerEntry" type="password" placeholder="Password" required
+                name="password" minlength="8" maxlength="30" pattern="[a-zA-Z0-9!@#$%^&*]+">
+                <input id="registerConfPassword" class="entryField registerEntry" type="password" placeholder="Confirm Password" required
+                name="password" minlength="8" maxlength="30" pattern="[a-zA-Z0-9!@#$%^&*]+">
+              </form>
+              <div class="submitButtonHolder" align="center">
+                <button class="submitButton generalSubmitButton" type="button" onClick="submitEntries(1)">Register</button>
+              </div>
+            </div>
+            <div class="bottomInput" id="forgotPwPanel">
+              <form id="resetForm" style="margin-top: 15%">
+                <input class="entryField resetEntry" type="text" placeholder="Username" required>
+                <input class="entryField resetEntry" type="text" placeholder="Email Address" required>
+              </form>
+              <div class="submitButtonHolder" align="center">
+                <button class="submitButton generalSubmitButton" type="button" onClick="submitEntries(2)">Reset Password</button>
+              </div>
+            </div>
+        </div>
+        <div id="alertContainer" align="center" style="width: 50%; left: 25%; bottom: 10%">
+          <div class="alert" id="alertBox">
+            <button class="closeAlertButton" type="button" onclick="this.parentElement.parentElement.style.display='none';" align="center">
+              <span class="closeSpan">✘</span>
+            </button>
+            <span id="errorMsg"></span>
+          </div>
+        </div>
+    </div>
+    <script src="../sourcecode/GeneralScript.js"></script>
+    <script src="../sourcecode/Controlbar.js"></script>
+    <script src="../sourcecode/Authentication.js"></script>
+</body>
+</html>
