@@ -1,1 +1,88 @@
+.container {
+    width: 100%;
+    height: 96.5%;
+    display: flex;
+    position: relative;
+    margin-top: 22.5px;
+}
+.splitside {
+    width: 50%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+}
 
+.topInput {
+    width: 85%;
+    height: 7.5%;
+    margin-left: 7.5%;
+    margin-top: 5%;
+    position: relative;
+}
+.midInput{
+  width: 85%;
+  height: 7.5%;
+  margin-left: 7.5%;
+  border-radius: 20px;
+  position: relative;
+  box-shadow: 3px 3px 10px 5px grey inset;
+  display: flex;
+}
+.bottomInput {
+    width: 85%;
+    height: 50%;
+    margin-left: 7.5%;
+    margin-top: 10%;
+    position: absolute;
+    transition: .5s;
+}
+.entryField{
+  width: 75%;
+  margin: 1.5% 2.5%;
+  border-left: 0;
+  border-right: 0;
+  border-top: 0;
+  border-bottom: 1px solid grey;
+  background: transparent;
+}
+
+.toggleButton{
+  display: inline-block;
+  width: 33.3%;
+  height: 100%;
+  border: 0;
+  background: transparent;
+  outline: none;
+  text-align: justify;
+}
+.toggleMovement{
+  width: 33.3%;
+  height: 100%;
+  border-radius: 20px;
+  transition: .5s;
+  position: absolute;
+  background: radial-gradient(#e7e9bb,#403b4a);
+  left: 0;
+  opacity: .4;
+  z-index: -1;
+}
+.sliderIcon{
+  width: 16%;
+  height: 40%;
+  margin-top: 7.5%;
+  float: left;
+  margin-left: 4%;
+  padding-right: 10.5%;
+}
+.submitButtonHolder{
+  width: 75%;
+  margin-left: 12.5%;
+  margin-top: 5%;
+}
+
+#registerPanel{
+  left: 100%;
+}
+#forgotPwPanel{
+  left: 100%;
+}

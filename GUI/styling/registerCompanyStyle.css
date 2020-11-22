@@ -1,0 +1,171 @@
+.container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    margin-top: 22.5px;
+}
+.displayArea{
+  width: 100%;
+  height: 92.5%;
+  display: flex;
+}
+.screen{
+  width: 80%;
+  height: 90%;
+  margin-left: 10%;
+  margin-top: 3%;
+  display: flex;
+}
+.splitside {
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+}
+.textArea{
+  width: auto;
+  height: 45%;
+  position: relative;
+  text-align: center;
+}
+.imageArea{
+  width: 100%;
+  height: 55%;
+  position: relative;
+  margin-top: -15%;
+  z-index: -1;
+}
+.entryArea{
+  width: 100%;
+  height: 90%;
+  position: absolute;
+  transition: .5s;
+}
+.arrowArea{
+  width: 100%;
+  height: 10%;
+  position: absolute;
+  bottom: 0;
+}
+.workerImage{
+  width: 100%;
+  height: 100%;
+  opacity: .7;
+}
+.arrowImage{
+  width: 100%;
+  height: 100%;
+}
+.arrowButton{
+  width: 10%;
+  height: 70%;
+  margin-right: 5%;
+  margin-top: 1%;
+  background: transparent;
+  border: 0;
+  outline: none;
+}
+.entryTitleArea{
+  width: 100%;
+  height: 10%;
+  text-align: center;
+}
+.entryFormArea{
+  width: 100%;
+  height: 90%;
+}
+.entryTitleSpan{
+  font-size: 175%;
+  font-weight: 900;
+}
+.companyRegisterEntry{
+  width: 80%;
+  padding: 3% 1%;
+  margin: 3% 0 0 10%;
+  border-left: 0;
+  border-right: 0;
+  border-top: 0;
+  border-bottom: 1px solid grey;
+  background: transparent;
+}
+.employeeRegisterEntry{
+  width: 80%;
+  padding: 3% 1%;
+  margin: 3% 0 0 10%;
+  border-left: 0;
+  border-right: 0;
+  border-top: 0;
+  border-bottom: 1px solid grey;
+  background: transparent;
+}
+.checkBoxButton{
+  position: relative;
+  background: transparent;
+  border: 1px solid grey;
+  border-radius: 2px;
+  font-weight: 900;
+  font-size: 110%;
+  text-align: center;
+  outline: none;
+}
+
+.textAreaInput{
+  resize: none;
+  background: transparent;
+  transition: .5s;
+  border-left: 0;
+  border-right: 0;
+  border-top: 0;
+  border-bottom: 1px solid grey;
+}
+.textAreaInput:hover{
+  background: rgba(64,59,74, .05);
+  transition: 0s;
+}
+#compDescription{
+  width: 80%;
+  padding: 1% 1.2%;
+  margin: 4% 0 0 10%;
+}
+
+#employeeAddress{
+  width: 80%;
+  padding: 1% 1.2%;
+  margin: 4% 0 0 10%;
+}
+
+#remoteSpan{
+  float: right;
+  margin-right: 10%;
+}
+#checkMarkSpan{
+  color: red;
+  position: absolute;
+  right: 5%;
+  top: -55%;
+}
+#checkBoxBtnID{
+  width: 5%;
+  height: 4.5%;
+  margin-left: 70%;
+  margin-top: 2%;
+}
+#greetingSpan{
+  font-size: 250%;
+  font-weight: 900;
+  max-width: 98%;
+  word-wrap:break-word;
+}
+#submitCompanyRegister{
+  float: left;
+  width: 30%;
+  margin-left: 12.5%;
+  margin-top: 2%;
+  display: inline-block;
+  height: 60%;
+  border: 0;
+  border-radius: 20px;
+  outline: none;
+  background: radial-gradient(#e7e9bb,#403b4a);
+  display: none;
+}
