@@ -16,19 +16,26 @@
   <div class="toolbar">
       <div class="functionalToolbar" onMouseLeave="activateTransition(document.getElementById('toggleMovementDiv').value)">
         <div class="toggleMovement" id="toggleMovementDiv"></div>
-          <button class="toggleButton" type="button" onMouseOver="activateTransition('0%')" onClick="beginWindowLoadingByType(0)">
+          <button class="toggleButton" type="button" onMouseOver="activateTransition('0%')"
+            onClick="beginWindowLoadingByType(0, null)">
             Home<img src="../graphics/home.png" class="sliderIcon"></button>
-          <button class="toggleButton" style="left: 20%" type="button" onMouseOver="activateTransition('20%')"  onClick="beginWindowLoadingByType(1)">
+          <button class="toggleButton" style="left: 20%" type="button" onMouseOver="activateTransition('20%')"
+            onClick="beginWindowLoadingByType(1, null)">
             Company<img src="../graphics/suitcase.png" class="sliderIcon"></button>
-          <button class="toggleButton" type="button" style="left: 40%" onMouseOver="activateTransition('40%')"  onClick="beginWindowLoadingByType(2)">
+          <button class="toggleButton" type="button" style="left: 40%" onMouseOver="activateTransition('40%')"
+            onClick="beginWindowLoadingByType(2, null)">
             Search<img src="../graphics/magnifier.png" class="sliderIcon"></button>
-          <button class="toggleButton" type="button" style="left: 60%" onMouseOver="activateTransition('60%')"  onClick="beginWindowLoadingByType(3)">
+          <button class="toggleButton" type="button" style="left: 60%" onMouseOver="activateTransition('60%')"
+            onClick="beginWindowLoadingByType(3, null)">
             Account<img src="../graphics/networking.png" class="sliderIcon"></button>
-          <button class="toggleButton" type="button" style="left: 80%" onMouseOver="activateTransition('80%')"  onClick="beginWindowLoadingByType(4)">
+          <button class="toggleButton" type="button" style="left: 80%" onMouseOver="activateTransition('80%')"
+            onClick="beginWindowLoadingByType(4, null)">
             Settings<img src="../graphics/settings.png" class="sliderIcon"></button>
       </div>
       <div class="marginDiv" style="float: right; margin-left: 15%;">
-        <button id="avatarHolder" type="button"><img id="avatarImage" src="../graphics/user.png" style="width: 100%; height: 100%"></button>
+        <button id="avatarHolder" type="button" onClick="beginWindowLoadingByType(3)">
+          <img id="avatarImage">
+        </button>
       </div>
   </div>
   <div class="displayArea">
