@@ -5,16 +5,8 @@ quitBool = true;
 authInfo = {username: null, password: null};
 
 function loadWindowByType (wintype, path) {
-  switch(wintype){
-    case 0:
-    mainWindow = createWindow(750, 550);
-    mainWindow.loadFile(path);
-    break;
-    case 1:
-    mainWindow = createWindow(1000, 650);
-    mainWindow.loadFile(path);
-    break;
-  }
+  mainWindow = wintype == 0? createWindow(750, 550) : createWindow(1000, 650);
+  mainWindow.loadFile(path);
 
   mainWindow.once('ready-to-show', () => {
     mainWindow.show();
@@ -27,7 +19,7 @@ function createWindow(width, height){
     width: width,
     height: height,
     resizable: false,
-    frame: false,
+    frame: true,
     icon: '../GUI/graphics/Hardhat.ico',
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
