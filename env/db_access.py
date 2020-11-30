@@ -70,11 +70,8 @@ class DBManager(object):
         return retVal[0]
 
     def fetchWorkerProfile(self, username):
-        self.__curs.execute(
-            '''select * from workersprofile where paired_account=%s''', (username,)
-        )
-        hasWorkerProfile = True if self.__curs.fetchone() is not None else False
-        return hasWorkerProfile
+        self.__curs.execute('''select * from workersprofile where paired_account=%s''', (username,))
+        return True if self.__curs.fetchone() is not None else False
 
     def getWorkerDetails(self, username):
         self.__curs.execute(
@@ -84,6 +81,98 @@ class DBManager(object):
         if retVal is None:
             raise Exception("0,No paired worker profile associated with this user.")
         return retVal[1:]
+
+    def fetchUserAvatar(self, username):
+        self.__curs.execute('''select avatar from workersavatar where paired_account=%s''', (username,))
+        retVal = self.__curs.fetchone()
+        return retVal[0] if retVal is not None else None
+
+    def updateUserAvatar(self, username, avatar):
+        binaryImage = avatar.read()
+        self.__curs.execute('''update workersavatar set avatar=%s where paired_account=%s''', (binaryImage, username))
+        self.__conn.commit()
+
+    def removeUserAvatar(self, username):
+        self.__curs.execute('''delete from workersavatar where paired_account=%s''', (username,))
+        self.__conn.commit()
+
+    def addUserAvatar(self, username, avatar):
+        binaryImage = avatar.read()
+        self.__curs.execute('''insert into workersavatar(paired_account, avatar) values(%s, %s)''',
+                            (username, binaryImage))
+        self.__conn.commit()
+
+    def getAccountEmailAddress(self, username):
+        self.__curs.execute(
+            '''select email from accounts where username=%s''', (username,)
+        )
+        retVal = self.__curs.fetchone()
+        if retVal is None:
+            raise Exception("0,No paired account associated with this user.")
+        return retVal[0]
+
+    def getEnrolledCompanies(self, username):
+        self.__curs.execute(
+            '''select C1.id, C1.title, C2.avatar from companies C1 left join companiesavatar C2 on C1.id=C2.comp_id 
+            where C1.paired_account=%s''', (username,)
+        )
+        retVal = self.__curs.fetchall()
+        if retVal is None:
+            raise Exception("0,No paired account associated with this user.")
+        return retVal
+
+    def updateWorkerProfile(self, username, actionType, newValue):
+        columnIdentifier = ('first_name', 'last_name', 'city', 'country', 'address')
+        queryBeforeParamBind = f'update workersprofile set {columnIdentifier[actionType]}=%s where paired_account=%s'
+        self.__curs.execute(queryBeforeParamBind, (newValue, username))
+        self.__conn.commit()
+
+    def getCompaniesMatchingKeyPhrase(self, username, keyPhrase, limit):
+        sqlQuery = \
+            '''
+                    select C.id, C.title, (select avatar from companiesavatar where C.id = comp_id) avatar
+                    from companies C where id not in (select id from companies where paired_account=%(username)s)
+                    order by random() desc limit %(limit)s
+        ''' \
+                if not keyPhrase else \
+                '''
+                    select Query.comp_id,
+                    (select title from companies where Query.comp_id = id) title,
+                    (select avatar from companiesavatar where Query.comp_id = comp_id) avatar
+                    from 
+                    (select comp_id from searchquery where search_terms @@ to_tsquery(%(keyphrase)s)
+                    and comp_id not in (select id from companies where paired_account=%(username)s)
+                    order by ts_rank(search_terms, to_tsquery(%(keyphrase)s)) desc limit %(limit)s) Query
+        '''
+        parameters = {'username': username, 'limit': limit} if not keyPhrase else \
+            {'keyphrase': keyPhrase, 'username': username, 'limit': limit}
+        self.__curs.execute(sqlQuery, parameters)
+        return self.__curs.fetchmany(limit)
+
+    def fetchCompanyDetails(self, compID):
+        self.__curs.execute(
+            '''select location, title, description,
+               (select avatar from companiesavatar where comp_id=%(compID)s) avatar
+                from companies where id=%(compID)s''', {'compID': compID}
+        )
+        retVal = self.__curs.fetchone()
+        if retVal is None:
+            raise Exception("0,Company identifier does not exist.")
+        return retVal
+
+    def fetchCEODetails(self, compID):
+        self.__curs.execute(
+            '''select WP.first_name || ' ' || WP.last_name, 
+                (select email from accounts where username=P.paired_account) email,
+                (select avatar from workersavatar where paired_account=P.paired_account) avatar
+                from (select paired_account from companies where id=%s) P, 
+                (select paired_account, first_name, last_name from workersprofile) WP
+                where WP.paired_account = P.paired_account''', (compID,)
+        )
+        retVal = self.__curs.fetchone()
+        if retVal is None:
+            raise Exception("0,No CEO associated to this company ID.")
+        return retVal
 
 
 '''
