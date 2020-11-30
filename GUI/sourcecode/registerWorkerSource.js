@@ -73,8 +73,8 @@ function expandWindow(winType){
 
 function startCounter(){
   response = "Worker profile registered successfully. You will be redirected within ";
-  displayAlert(response+"5 seconds");
-  var timeLeft = 4;
+  displayAlert(response+"3 seconds");
+  var timeLeft = 2;
   var timer = setInterval(() => {
     if(timeLeft <= 0){
       clearInterval(timer);

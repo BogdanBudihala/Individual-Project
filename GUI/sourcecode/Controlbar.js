@@ -43,12 +43,16 @@ function displayPromptLogOut(){
 
 function toggleContainerVisibility(isLocked){
   containerDiv = document.getElementsByClassName("container")[0];
-  containerDiv.style.pointerEvents = isLocked? "none": "initial";
-  containerDiv.style.opacity = isLocked? ".3": "initial";
+  containerDiv.style.pointerEvents = isLocked? "none": "";
+  isLocked? containerDiv.classList.add("unselectable") : containerDiv.classList.remove("unselectable");
+  containerDiv.style.opacity = isLocked? ".3": "";
 }
 
 function vanishPromptLogOut(){
-  document.getElementById("tempPlainDivAlert").remove();
+  tempPlainDivAlert = document.getElementById("tempPlainDivAlert");
+  if(tempPlainDivAlert != null){
+    tempPlainDivAlert.remove();
+  }
   toggleContainerVisibility(false)
 }
 

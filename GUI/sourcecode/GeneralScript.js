@@ -8,6 +8,17 @@ function postData(url, parametersToSend, callbackIfSuccessful){
  });
 }
 
+function postBinaryData(url, parametersToSend, callbackIfSuccessful){
+  $.ajax({
+   url: url,
+   type: 'POST',
+   processData: false,
+   contentType: false,
+   data: parametersToSend,
+   success: callbackIfSuccessful
+  });
+}
+
 function attachOnEnterSubmit(entry, button){
   entry.addEventListener("keyup", function(event) {
     if (event.keyCode === 13) {
