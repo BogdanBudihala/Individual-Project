@@ -19,6 +19,9 @@ button:disabled{
   opacity: .5;
   cursor: default;
 }
+textarea{
+  cursor: auto;
+}
 img{
   pointer-events: none;
   user-select: none;
@@ -35,6 +38,33 @@ input[type=text]:hover, input[type=password]:hover{
   background: rgba(64,59,74, .05);
 }
 
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.unselectable {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
 /* Control bar styling */
 #controlsBar{
   width: 100%;

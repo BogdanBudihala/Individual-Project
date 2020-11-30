@@ -140,6 +140,12 @@
   height: 100%;
 }
 
+#avatarImage{
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+}
+
 /* Company Section Style */
 
 .companySectionContainer{
@@ -229,7 +235,7 @@
   position: relative;
 }
 
-.accountSetionImageArea{
+.accountSetionImageArea, .searchSetionImageArea{
   width: 50%;
   height: 50%;
   z-index: -1;
@@ -255,6 +261,7 @@
 .accountSectionAvatarArea{
   width: 20%;
   height: 100%;
+  position: relative;
 }
 .accountSectionAvatarArea:hover{
   cursor:pointer;
@@ -279,10 +286,19 @@
   overflow: hidden;
 }
 
-#accountSectionChangeAvatarBox{
+.accountSectionLegend {
+  transform: translatey(-70%);
+  padding-bottom: .5%;
+  background: transparent;
   position: absolute;
-  width: 100px;
-  height: 25px;
+  font-size: 80%;
+  color: grey;
+}
+
+#accountSectionChangeBox{
+  position: absolute;
+  width: auto;
+  height: auto;
   background: #243341;
   display: inline-block;
   font-size: 70%;
@@ -296,7 +312,7 @@
   cursor: pointer;
 }
 
-#accountSectionCompanyImage{
+#accountSectionCompanyImage, #searchSectionCompanyImage{
   width: 100%;
   height: 100%;
 }
@@ -304,7 +320,7 @@
 #popupWindowDiv{
   position: absolute;
   width: 30%;
-  height: 20%;
+  height: auto;
   background: #243341;
   opacity: 1;
   z-index: 10;
@@ -322,7 +338,25 @@
   color: white;
   border-radius: 5px;
   outline: none;
-  border: 1px dashed #BBB
+  border: 1px dashed #BBB;
+  margin-left: 30%;
+}
+
+#checkMarkSelectedFile{
+  margin-left: 5%;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: red;
+  opacity: 1 !important;
+}
+
+#avatarImageEnlarged{
+  width: 80%;
+  height: 80%;
+  margin-left: 10%;
+  margin-top: 10%;
+  border-radius: 10px
 }
 
 .popupWindowSubmitButton{
@@ -334,5 +368,367 @@
   border-radius: 5px;
   outline: none;
   border: 0;
-  margin-top: 6.5%;
+  margin-top: 3.5%;
+}
+
+.accountSectionLowerArea{
+  width: 100%;
+  height: 70%;
+  display: flex;
+}
+.accountSectionLowerAreaLeft{
+  width: 60%;
+  height: 100%;
+}
+.accountSectionLowerAreaRight{
+  width: 40%;
+  height: 100%;
+}
+.accountSectionWorkerDetails{
+  width: 90%;
+  height: 80%;
+  margin-top: 7.5%;
+  margin-left: 5%;
+}
+
+.accountSectionRow{
+  display: flex;
+  width: 100%;
+  height: 16.5%;
+  margin-top: 10%;
+  overflow-x: hidden;
+}
+
+.accountSectionSplitSide{
+  width: 45%;
+  height: 99%;
+  overflow-x: hidden;
+}
+
+.accountSectionSplitSide:hover, #accountSectionAddressRow:hover, .accountSectionEnrolledCompanyDiv:hover,
+.accountSectionNoCompanyWrapper:hover, .searchSectionEnrolledCompanyDiv:hover{
+  background: rgba(64,59,74, .05);
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.accountSectionHeaderSpan{
+  margin-left: 5%;
+  font-weight: 900;
+}
+
+.accountSectionLowerAreaText{
+  width: 100%;
+  height: 12.5%;
+  margin-bottom: 2.5%;
+}
+
+.accountSectionEnrolledCompanyDiv{
+  width: 100%;
+  height: 25%;
+  display: flex;
+  position: relative;
+  margin-top: 5%;
+}
+.accountSectionLoadedCompaniesContainer{
+  width: 100%;
+  height: 85%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  word-wrap: break-word;
+}
+
+.accountSectionEnrolledCompanyAvatarArea{
+  width: 80%;
+  height: 80%;
+  margin-top: 10%;
+  margin-left: 10%;
+  border-radius: 5px;
+}
+
+.accountSectionCompanyAvatar{
+  width: 100%;
+  height: 100%;
+}
+
+.accountSectionEnrolledCompanySplitSide{
+  height: 100%;
+}
+
+.accountSectionEnrolledCompanyName, .accountSectionEnrolledCompanyIdentifier{
+  width: 100%;
+  height: 40%;
+}
+
+.accountSectionCompaniesLegend {
+  transform: translatey(-50%);
+}
+
+.accountSectionEnrolledCompanyNameSpan, .accountSectionEnrolledCompanyIdentifierSpan{
+  font-weight: 900;
+}
+
+.accountSectionNoCompanyInnerWrapper{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  position: relative;
+}
+
+.accountSectionNoCompanyWrapper{
+  width: 100%;
+  height: 25%;
+  position: relative;
+  margin-top: 5%;
+}
+
+#accountSectionNewValueField{
+  width: 80%;
+  margin-top: 2%;
+  border-left: 0;
+  border-right: 0;
+  border-top: 0;
+  border-bottom: 1px solid grey;
+  background: transparent;
+  color: white;
+  resize: none;
+}
+
+#accountSectionNewValueField:hover{
+  background: rgba(255,255,255, .05);
+  transition: 0s;
+}
+
+#accountSectionAddressRow{
+  width: 100%;
+  height: 16.5%;
+  margin-top: 10%;
+  overflow-x: hidden;
+}
+
+
+/* Search Section Style */
+
+.searchSectionContainer{
+  width: 100%;
+  height: 100%;
+}
+
+.searchSectionContent{
+  width: 80%;
+  height: 80%;
+  margin-top: 6%;
+  margin-left: 10%;
+}
+
+.searchSectionMenu{
+  width: 50%;
+  height: 10%;
+  margin-left: 25%;
+  margin-top: 2.5%;
+  float: left;
+  display: flex;
+}
+
+#searchSectionFilterInput{
+  width: 80%;
+  border: 1px solid grey;
+  border-radius: 5px;
+  background: transparent;
+  outline: none;
+}
+
+#searchSectionFilterInput:hover{
+  background: rgba(64,59,74, .05);
+}
+
+
+#searchSectionFilterButton{
+  display: inline-block;
+  width: 9%;
+  height: 60%;
+  margin-top: 2%;
+  border: 0;
+  background: transparent;
+  outline: none;
+  margin-left: 2%;
+}
+
+.searchSectionResults{
+  width: 80%;
+  height: 90%;
+  float: left;
+  margin-top: 2.5%;
+  margin-left: 5%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+}
+
+.searchSectionFetchedCompany{
+  width: 100%;
+  height: 35%;
+  display: flex;
+}
+
+.fetchedCompanySplitSide{
+  height: 100%;
+}
+
+.fetchedCompanyAvatarArea{
+  width: 60%;
+  height: 60%;
+  margin-top: 20%;
+  margin-left: 20%;
+  border-radius: 5px;
+  background: blue;
+}
+
+#searchSectionPopupWindowDiv{
+  background: red;
+  width: 60%;
+  height: 60%;
+  left: 20%;
+  top: 20%;
+  position: absolute;
+  opacity: 1;
+  z-index: 1;
+  border-radius: 10px;
+  background: #243341;
+
+}
+
+.upperSearchSectionPopupWindowArea{
+  margin-top: 2.5%;
+  height: 77.5%;
+  width: 100%;
+  display: flex;
+}
+
+.lowerSearchSectionPopupWindowArea{
+  margin-top: 2.5%;
+  height: 12.5%;
+  width: 100%;
+}
+
+.searchSectionPopupSplitSide{
+  height: 100%;
+}
+.popupSplitSideTitleArea{
+  width: auto;
+  height: 12.5%;
+}
+.popupSplitSideTitleSpan{
+  color: white;
+  font-weight: 900;
+  font-size: 120%;
+}
+
+.popupSplitSideAvatarArea{
+  width: 100%;
+  height: 30%;
+  display: flex;
+}
+
+.popupCompanyAvatarArea{
+  width: 25%;
+  height: 100%;
+  margin-left: 2.5%;
+  border-radius: 5px;
+  border: 1px solid white;
+  background: rgba(255,255,255, .05);
+}
+
+.popupCEOAvatarArea{
+  width: 38.5%;
+  height: 100%;
+  margin-left: 30.75%;
+  border-radius: 5px;
+  border: 1px solid white;
+  background: rgba(255,255,255, .05);
+}
+
+.popupCompanyAvatarArea:hover, .popupCEOAvatarArea:hover{
+  background: rgba(255,255,255, .1);
+}
+
+.popupCompanyIDLocationContainer{
+  width: 67.5%;
+  margin-left: 2.5%;
+  margin-top: .5%;
+  height: 95%;
+  overflow: hidden;
+}
+
+.popupUpperSpanHolder{
+  margin-top: 4%;
+  width: 100%;
+  height: 40%;
+}
+
+.searchSectionCompanySpanLabel, .searchSectionCEOSpanLabel{
+  color: white;
+}
+
+.popupAvatarImage{
+  margin-left: 2.5%;
+  margin-top: 2.5%;
+  width: 95%;
+  height: 95%;
+  border-radius: 5px;
+}
+
+.popupSplitSideBottomArea{
+  width: 100%;
+  height: 52.5%;
+  margin-top: 2.5%;
+}
+
+.popupMiddleSpanHolder{
+  width: 95%;
+  margin-left: 2.5%;
+  margin-top: 3.5%;
+  height: 20%;
+  float: left;
+  overflow: hidden;
+}
+
+.popupLowerSpanHolder{
+  width: 95%;
+  margin-left: 2.5%;
+  margin-top: 2.5%;
+  max-height: 70%;
+  height: auto;
+  float: left;
+  word-wrap: break-word;
+  overflow-y: auto;
+}
+
+.searchSectionCompanySpanLabel:hover, .searchSectionCEOSpanLabel:hover{
+  background: rgba(255,255,255, .05);
+  cursor: default;
+  border-radius: 5px;
+}
+
+
+.searchSectionEnrolledCompanyDiv{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  position: relative;
+  overflow: hidden;
+}
+
+.matchingCompanyContainer{
+  display: flex;
+  width: 100%;
+  height: 20%;
+  margin-top: 2.5%;
+  margin-bottom: 5%;
+}
+
+.matchingCompanySplitside{
+   width: 47.5%;
+   height: 100%;
+   margin-left: 2.5%;
 }
