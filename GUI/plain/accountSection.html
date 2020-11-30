@@ -2,10 +2,11 @@
   <div class="accountSetionImageArea">
     <img id="accountSectionCompanyImage" src="../graphics/Profile.svg">
   </div>
-  <div class="accountSectionContent">
-    <div class="accountSectionUpperArea" id="accountSectionUpperAreaDiv" onMouseLeave="toggleAccountSectionChangeBox(1)">
-      <div class="accountSectionAvatarArea" onClick="toggleAccountSectionChangeBox(0)">
-        <img id="avatarImageEnlarged" src="../graphics/user.png" style="width: 80%; height: 80%; margin-left: 10%; margin-top: 10%;">
+  <div class="accountSectionContent" id="accountSectionContent">
+    <div class="accountSectionUpperArea" id="accountSectionUpperAreaDiv">
+      <div class="accountSectionAvatarArea"
+        onClick="toggleAccountSectionChangeBox(0, document.getElementById('accountSectionContent'))">
+        <img id="avatarImageEnlarged">
       </div>
       <div class="accountSectionTextArea">
         <div class="accountSectionGreetingArea">
@@ -16,6 +17,41 @@
         </div>
       </div>
 
+    </div>
+    <div class="accountSectionLowerArea">
+      <div class="accountSectionLowerAreaLeft">
+        <div class="accountSectionWorkerDetails">
+          <div class="accountSectionRow">
+            <div class="accountSectionSplitSide"
+              onClick="toggleAccountSectionChangeBox(1, document.getElementById('accountSectionContent'))">
+              <span class="accountSectionLegend unselectable accountSectionField">First Name</span>
+              <span class="accountSectionHeaderSpan" id="accountSectionFirstNameSpan"></span></div>
+            <div class="accountSectionSplitSide" style="margin-left: 10%;"
+              onClick="toggleAccountSectionChangeBox(2, document.getElementById('accountSectionContent'))">
+              <span class="accountSectionLegend unselectable accountSectionField">Last Name</span>
+              <span class="accountSectionHeaderSpan" id="accountSectionLastNameSpan"></span></div>
+          </div>
+          <div class="accountSectionRow">
+            <div class="accountSectionSplitSide"
+              onClick="toggleAccountSectionChangeBox(3, document.getElementById('accountSectionContent'))">
+              <span class="accountSectionLegend unselectable accountSectionField">City</span>
+              <span class="accountSectionHeaderSpan" id="accountSectionCitySpan"></span></div>
+            <div class="accountSectionSplitSide" style="margin-left: 10%;"
+              onClick="toggleAccountSectionChangeBox(4, document.getElementById('accountSectionContent'))">
+              <span class="accountSectionLegend unselectable accountSectionField">Country</span>
+              <span class="accountSectionHeaderSpan" id="accountSectionCountrySpan"></span></div>
+          </div>
+          <div id="accountSectionAddressRow"
+            onClick="toggleAccountSectionChangeBox(5, document.getElementById('accountSectionContent'))">
+            <span class="accountSectionLegend unselectable accountSectionField">Address</span>
+            <span style="margin-left: 3%; font-weight: 900" id="accountSectionAddressSpan"></span></div>
+        </div>
+      </div>
+      <div class="accountSectionLowerAreaRight">
+        <div class="accountSectionLowerAreaText" align="center"><span style="font-size: 130%; font-weight: 900">Enrolled companies</span></div>
+        <div class="accountSectionLoadedCompaniesContainer">
+        </div>
+      </div>
     </div>
   </div>
 </div>
