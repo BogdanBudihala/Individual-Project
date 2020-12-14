@@ -37,8 +37,9 @@ function parseAvatarLoadingResponse(response, avatarType){
 function beginWindowLoadingByType(winType, propagatedCallback){
   activateTransition(winType*20+"%");
   urls = ['http://127.0.0.1:5000/worker_details', 'http://127.0.0.1:5000/worker_details',
-   'http://127.0.0.1:5000/worker_details', 'http://127.0.0.1:5000/account_details']
-  callbackFuncs = [(response) => {loadHomeWindow(response, propagatedCallback)}, loadCompanyWindow, loadSearchWindow, loadAccountWindow];
+   'http://127.0.0.1:5000/worker_details', 'http://127.0.0.1:5000/account_details', 'http://127.0.0.1:5000/account_details']
+  callbackFuncs = [(response) => {loadHomeWindow(response, propagatedCallback)}, loadCompanyWindow, loadSearchWindow,
+    loadAccountWindow, loadSettingsWindow];
   document.getElementById("toggleMovementDiv").value = winType * 20 + "%";
   document.getElementById("alertContainer").style.display = "none";
   let currentWin = document.getElementById("homeScreen");
@@ -66,16 +67,19 @@ function parseWindowLoadingResponse(response, callback){
 
 function loadHomeWindow(workerDetails, propagatedCallback){
   loadHTMLChunk("../plain/homeSection.html", document.getElementById("homeScreen"), () => {
-    document.getElementById("greetingSpan").innerHTML = "Hello, "+getShortenedTextValue(workerDetails.firstName, 30);
+    document.getElementById("greetingSpan").innerHTML = "Hello, "+workerDetails.firstName;
     if(propagatedCallback != null){
         propagatedCallback();
     }
+    attachOnEnterSubmit(document.getElementById("homeSectionCompanyIdentifier"),
+      document.getElementsByClassName("homeSectionConnectButton")[0]);
   });
 }
 
 function loadSearchWindow(workerDetails){
   loadHTMLChunk("../plain/searchSection.html", document.getElementById("homeScreen"), () => {
     fetchCompaniesByKeyword();
+    attachOnEnterSubmit(document.getElementById("searchSectionFilterInput"), document.getElementById("searchSectionSearchButton"));
   });
 }
 
@@ -110,14 +114,18 @@ function setCustomValidityHomeSectionError(object){
 
 function parseHomeSectionResponse(response){
     if(response.success){
-      document.getElementById("homeSectionForm").reset();
+      let dotsCount=1;
+      setInterval(() => {
+        displayAlert("Connecting"+".".repeat(dotsCount));
+        dotsCount+=1;
+      }, 333);
       document.body.style.cursor = "progress";
       setInterval(() => {
         redirectPage("../templates/employeeLogged.html");
       }, 1000);
     }
     else{
-      displayAlert(response.message);
+      displayAlert("Unable to connect to company<br>"+response.message);
     }
 }
 
@@ -125,11 +133,7 @@ function parseHomeSectionResponse(response){
 
 
 function loadCompanyWindow(workerDetails){
-  loadHTMLChunk("../plain/companySection.html", document.getElementById("homeScreen"), () => {
-    compDesc = document.getElementById("companySectionDescription");
-    compDesc.addEventListener('blur', () => {expandCompanyTextArea(false, compDesc, '30px')}, true);
-    compDesc.addEventListener('click', () => {expandCompanyTextArea(true, compDesc, '125px')}, true);
-  });
+  loadHTMLChunk("../plain/companySection.html", document.getElementById("homeScreen"), () => {});
 }
 
 function changeCheckBoxValue(checkBoxButton){
@@ -182,7 +186,6 @@ function submitCompanySectionEntries(){
 function parseCompanySectionResponse(response){
     if(response.success){
       document.getElementById("companySectionForm").reset();
-      expandCompanyTextArea(false, document.getElementById("companySectionDescription"), '30px');
       checkBoxButton = document.getElementById("companySectionCheckBoxButton");
       if(checkBoxButton.value == 1){
         changeCheckBoxValue(checkBoxButton);
@@ -200,7 +203,7 @@ function expandCompanyTextArea(enterBool, textArea, height){
 
 function loadAccountWindow(accountInfo){
   loadHTMLChunk("../plain/accountSection.html", document.getElementById("homeScreen"), () => {
-    document.getElementById("greetingSpan").innerHTML = "Hello, "+getShortenedTextValue(accountInfo.firstName, 30);
+    document.getElementById("greetingSpan").innerHTML = "Hello, "+accountInfo.firstName;
     document.getElementById("emailSpan").innerHTML = accountInfo.email;
     document.getElementById("accountSectionFirstNameSpan").innerHTML = accountInfo.firstName;
     document.getElementById("accountSectionLastNameSpan").innerHTML = accountInfo.lastName;
@@ -215,9 +218,10 @@ function loadAccountWindow(accountInfo){
 function loadCompaniesIntoContainer(companiesArray, containerDiv, winType){
   if(companiesArray.length < 1){
     //No companies returned
-    //loadNoResultsURL = winType == 0? "../plain/noEnrolledCompany.html" : "";
-    loadNoResultsURL = "../plain/noEnrolledCompany.html";
-    loadHTMLChunk(loadNoResultsURL, containerDiv, () => {});
+    loadNoResultsURL = winType == 0? "../plain/noEnrolledCompany.html" : "../plain/noResultsSearch.html";
+    callback = winType == 0? () => {} : () => {
+      document.getElementById("innerNoMatchSpan").innerHTML = document.getElementById("searchSectionFilterInput").value}
+    loadHTMLChunk(loadNoResultsURL, containerDiv, callback);
   }
   else{
     winType == 0? loadEnrolledCompanies(companiesArray, containerDiv): loadMatchingCompanies(companiesArray, containerDiv);
@@ -260,6 +264,7 @@ function toggleAccountSectionChangeBox(actionType, parentElement){
     changeBox.remove();
   }
   if(actionType === null){
+    document.getElementsByClassName("container")[0].removeEventListener('click', hideChangeBoxOnClickOutside, true);
     return;
   }
   innerHTMLText = "<button id='accountSectionChangeBox'>"+ actions[actionType] +"</button>";
@@ -271,12 +276,19 @@ function toggleAccountSectionChangeBox(actionType, parentElement){
     toggleAccountSectionChangeBox(null, null);
 
   });
+  document.getElementsByClassName("container")[0].addEventListener('click', hideChangeBoxOnClickOutside, true);
   cssTopValue = actionType < 6 ? window.event.pageY-$('#accountSectionContainerDiv').offset().top :
     event.pageY - $(parentElement).offset().top;
   cssLeftValue = actionType < 6 ? window.event.pageX-$('#accountSectionContainerDiv').offset().left :
     event.pageX - $(parentElement).offset().left;
   $('#accountSectionChangeBox').css('top', cssTopValue);
   $('#accountSectionChangeBox').css('left', cssLeftValue);
+}
+
+function hideChangeBoxOnClickOutside(e){
+  if(!document.getElementById("accountSectionChangeBox").contains(e.target)){
+    toggleAccountSectionChangeBox(null, null);
+  }
 }
 
 function redirectToHomeSection(companyDiv){
@@ -295,22 +307,21 @@ function loadPopupWindow(actionType){
     // VALIDATE AVATAR EXTENSION BEFORE SUBMITTING!
     callback = actionType != 0? () => {validateAccountSectionEntry(submitLambda)} : submitLambda;
     document.getElementById("popupWindowApplyChangesButton").addEventListener('click', callback);
+
     executeAfterLoading();
   });
   toggleScreenVisibility(true, 0);
 }
 
 function popupLoadChangeField(fieldIndex){
+  let containerIds = ["accountSectionNewValueFirstNameContainer", "accountSectionNewValueLastNameContainer",
+    "accountSectionNewValueCityContainer", "accountSectionNewValueCountryContainer", "accountSectionNewValueAddressContainer"]
   fields = Array.from(document.getElementsByClassName("accountSectionField")).map(object => object.innerHTML.toLowerCase());
   htmlLoadPath = fieldIndex == 4? "../plain/accountSectionChangeAddress.html" : "../plain/accountSectionChangeField.html";
   loadHTMLChunk(htmlLoadPath, document.getElementById("popupWindowContent"), () => {
     document.getElementById("popupWindowInfoSpan").innerHTML="Enter new "+fields[fieldIndex];
     document.getElementById("accountSectionNewValueField").placeholder = "New "+fields[fieldIndex];
-    if(fieldIndex == 4){
-      wkrAddr = document.getElementById("accountSectionNewValueField");
-      wkrAddr.addEventListener('blur', () => {expandCompanyTextArea(false, wkrAddr, '30px')}, true);
-      wkrAddr.addEventListener('click', () => {expandCompanyTextArea(true, wkrAddr, '80px')}, true);
-    }
+    document.getElementById("accountSectionNewValuePlainContainer").id=containerIds[fieldIndex];
   })
 }
 
@@ -333,7 +344,14 @@ function toggleScreenVisibility(isLocked, winType){
 }
 
 function submitModifications(modType){
-  modType == 0 ? submitAvatarChange(()=>{hidePopup(0)}) : submitFieldChange(modType-1, ()=>{hidePopup(0)});
+  if(modType == 0 && document.getElementById("popupWindowSelectFile").files[0] != null &&
+    !document.getElementById("popupWindowSelectFile").files[0]['type'].includes('image')){
+    displayAlert("File selected is not a valid image.");
+    hidePopup(0);
+  }
+  else{
+    modType == 0 ? submitAvatarChange(()=>{hidePopup(0)}) : submitFieldChange(modType-1, ()=>{hidePopup(0)});
+  }
 }
 
 function submitFieldChange(fieldType, propagatedCallback){
@@ -412,7 +430,7 @@ function fetchCompaniesByKeyword(){
   url = 'http://127.0.0.1:5000/search_results';
   keyPhraseValue = document.getElementById("searchSectionFilterInput").value;
   parameters = {username: validateCurrentUser(),
-    limit: document.getElementById("searchSectionFilterButton").value,
+    limit: parseInt(document.getElementById("searchSectionFilterButton").value)*2,
     keyPhrase: keyPhraseValue === null ? '' : keyPhraseValue};
   callback = (response) => {parseCompanyFetchResponse(response)};
   postData(url, parameters, callback);
@@ -509,4 +527,84 @@ function loadCEODetails(listOfAttributes){
   if(listOfAttributes[listOfAttributes.length-1] === null){
     document.getElementById("popupCEOAvatarImage").style.filter = "invert(100%)";
   }
+}
+
+function displayFilterPopup(){
+  document.getElementById("searchSectionContent").insertAdjacentHTML('afterbegin', "<div id='filterPopupHolder'></div>");
+  loadHTMLChunk("../plain/searchSectionFilterPopup.html", document.getElementById("filterPopupHolder"), ()=>{
+    toggleCompanyHolderVisibility(false);
+    updateRowCounter(2);
+  });
+}
+
+function toggleCompanyHolderVisibility(isActive){
+  if(isActive){
+    document.getElementsByClassName("searchSectionResults")[0].classList.remove("lockedElement");
+    document.getElementsByClassName("searchSectionResults")[0].classList.remove("unselectable");
+    document.getElementsByClassName("container")[0].removeEventListener('click', searchSectionEventListenerHandler, true);
+  }
+  else{
+    document.getElementsByClassName("searchSectionResults")[0].classList.add("lockedElement");
+    document.getElementsByClassName("searchSectionResults")[0].classList.add("unselectable");
+    document.getElementsByClassName("container")[0].addEventListener('click', searchSectionEventListenerHandler, true);
+  }
+}
+
+function searchSectionEventListenerHandler(e){
+  let popupDiv = document.getElementsByClassName('searchSectionFilterPopup')[0];
+  if(!popupDiv) return;
+  if (!popupDiv.contains(e.target)){
+    toggleCompanyHolderVisibility(true);
+    document.getElementById("filterPopupHolder").remove();
+  }
+}
+
+function updateRowCounter(actionType){
+  let rowValues = [5, 10, 20, 50, 100, 250, 500];
+  let counterArray = document.getElementsByClassName("searchSectionFilterRowCounter");
+  let valueHolder = document.getElementById("searchSectionFilterButton");
+  let intValue = parseInt(valueHolder.value);
+  let nextValueIndex = actionType == 0? rowValues.indexOf(intValue)-1 : actionType == 1?
+    rowValues.indexOf(intValue)+1 : rowValues.indexOf(intValue);
+
+  if(nextValueIndex == -1 || nextValueIndex == rowValues.length){
+    return
+  }
+
+  for(let i=0; i<counterArray.length; i++){
+    counterArray[i].innerHTML = rowValues[nextValueIndex];
+  }
+  valueHolder.value = rowValues[nextValueIndex];
+
+  document.getElementById("searchSectionArrowButtonLeft").disabled = nextValueIndex == 0;
+  document.getElementById("searchSectionArrowButtonRight").disabled = nextValueIndex == rowValues.length-1;
+}
+
+
+
+// SETTINGS SECTION sourcecode
+
+
+function loadSettingsWindow(workerDetails){
+  loadHTMLChunk("../plain/settingsSection.html", document.getElementById("homeScreen"), () => {});
+}
+
+function activateTabSliderTransition(targetPosInPercentage){
+  let movementTab = document.getElementById("settingsSectionTabSlider");
+  if(!movementTab.value){
+    movementTab.value = "0%";
+  }
+  movementTab.style.left = targetPosInPercentage;
+}
+
+function changeSettingsWindow(winType){
+  document.getElementById("settingsSectionTabSlider").value = winType == 0? "0%" : "50%";
+  document.getElementsByClassName("settingsSectionLowerArea")[0].style.left = winType == 0? "0%" : "-100%";
+  document.getElementsByClassName("settingsSectionLowerArea")[1].style.left = winType == 0? "100%" : "0%";
+}
+
+function toggleSettingsOption(parent, boolean){
+  parent.value = boolean;
+  parent.firstElementChild.style.left = boolean? "0%" : "50%";
+  parent.firstElementChild.style.background = boolean? "green" : "red";
 }

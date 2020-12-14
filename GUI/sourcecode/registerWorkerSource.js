@@ -3,11 +3,8 @@ window.onload = bindEvents();
 function bindEvents(){
   loadControlsBar(true);
   let currentUser = validateCurrentUser();
-  document.getElementById("greetingSpan").innerHTML = "Hello, "+getShortenedTextValue(currentUser, 25);
+  document.getElementById("greetingSpan").innerHTML = "Hello, "+currentUser;
 
-  wkrAddr = document.getElementById("workerAddress")
-  wkrAddr.addEventListener('blur', () => {expandTextArea(false, wkrAddr, '30px')}, true);
-  wkrAddr.addEventListener('click', () => {expandTextArea(true, wkrAddr, '80px')}, true);
 }
 
 function validateEntries(callMethodIfValid){
@@ -36,10 +33,6 @@ function setCustomValidityError(object){
     errorMessage = "Field may only contain letters or any of the following symbols: . - followed by letters"
   }
   object.setCustomValidity(errorMessage);
-}
-
-function expandTextArea(enterBool, textArea, height){
-  textArea.style.height = !enterBool && textArea.value != "" ? Math.max(Math.floor(textArea.value.length/2.1), 30)+"px" : height;
 }
 
 function submitEntries(){
@@ -72,17 +65,17 @@ function expandWindow(winType){
 }
 
 function startCounter(){
-  response = "Worker profile registered successfully. You will be redirected within ";
-  displayAlert(response+"3 seconds");
-  var timeLeft = 2;
+  response = "Worker profile registered successfully.<br>You will be redirected";
+  displayAlert(response);
+  var dotsCount = 1;
   var timer = setInterval(() => {
-    if(timeLeft <= 0){
+    if(dotsCount > 3){
       clearInterval(timer);
       redirectPage("../templates/companySearch.html")
     }
     else {
-      displayAlert(response+timeLeft+" seconds");
+      displayAlert(response+".".repeat(dotsCount));
     }
-    timeLeft -= 1;
-  }, 1000);
+    dotsCount += 1;
+  }, 500);
 }
