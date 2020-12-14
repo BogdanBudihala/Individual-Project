@@ -1,16 +1,15 @@
 <div class="homeSectionContainer">
   <div class="homeSectionTextArea">
-    <span id="greetingSpan"></span>
-    <span><br>You may connect to any company by filling in the unique company <b>identifier</b></span>
+    <span style="color: white"><span id="greetingSpan" style="white-space: nowrap;"></span>
+    <br>You may connect to any company by filling in the unique company <b>identifier</b></span>
   </div>
-  <div class="homeSectionInputArea">
-
-    <form id="homeSectionForm">
-      <input type="text" id="homeSectionCompanyIdentifier" class="homeSectionConnectEntry"
-        placeholder="Company Identifier" required minlength=3 maxlength=10>
-    </form>
+  <div class="homeSectionInputArea" align="center">
+    <div class="homeSectionConnectEntryDiv">
+      <input type="text" id="homeSectionCompanyIdentifier" class="homeSectionConnectEntry" spellcheck="false"
+        placeholder="Company Identifier" required minlength=3 maxlength=10 onKeyDown="this.setCustomValidity('')">
+    </div>
     <div align="center" style="margin-top: 5%">
-      <button class="generalSubmitButton" type="button" onClick="validateHomeSectionEntry(submitHomeSectionEntry)">Connect</button>
+      <button class="homeSectionConnectButton" type="button" onClick="validateHomeSectionEntry(submitHomeSectionEntry)">Connect</button>
     </div>
   </div>
   <div class="homeSetionImageArea">

@@ -1,4 +1,4 @@
-<div>
-  <input id="accountSectionNewValueField" type="text" required minlength="3" maxlength="30"
-    pattern="([a-zA-Z]+[\. -]{0,1})+[a-zA-Z]+"></input>
+<div id="accountSectionNewValuePlainContainer" class="accountSectionNewValueContainer">
+  <input id="accountSectionNewValueField" type="text" required minlength="3" maxlength="30" spellcheck="false"
+    pattern="([a-zA-Z]+[\. -]{0,1})+[a-zA-Z]+" onKeyDown="this.setCustomValidity('')"></input>
 </div>

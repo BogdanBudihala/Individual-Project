@@ -4,9 +4,12 @@
   </div>
   <div class="searchSectionContent" id="searchSectionContent">
     <div class="searchSectionMenu">
+      <button type="button" id="searchSectionFilterButton" onClick="displayFilterPopup()" value=5>
+        <img class="searchSectionButtonIcon" src="../graphics/filter.png" style="float: right">
+      </button>
       <input type="text" id="searchSectionFilterInput" spellcheck="false" placeholder="Search companies" maxlength="50"></input>
-      <button type="button" id="searchSectionFilterButton" onClick="fetchCompaniesByKeyword()" value="10">
-        <img src="../graphics/magnifiermirrored.png" style="width: 100%; height: 100%;">
+      <button type="button" id="searchSectionSearchButton" onClick="fetchCompaniesByKeyword()">
+        <img class="searchSectionButtonIcon" src="../graphics/magnifiermirrored.png" style="float: left">
       </button>
     </div>
     <div class="searchSectionResults">
