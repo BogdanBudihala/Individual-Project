@@ -76,10 +76,13 @@
 .textAreaInput{
   resize: none;
   height: 30px;
+  transition: height .3s;
 }
 .textAreaInput:hover{
   background: rgba(64,59,74, .05);
-  transition: 0s;
+}
+.textAreaInput:focus{
+  height: 80px;
 }
 .arrowImage{
   width: 100%;
@@ -99,5 +102,9 @@
   font-size: 250%;
   font-weight: 900;
   max-width: 98%;
-  word-wrap:break-word;
+}
+.spanContainer{
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }

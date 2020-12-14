@@ -65,6 +65,11 @@ input[type=text]:hover, input[type=password]:hover{
     -ms-user-select: none;
     user-select: none;
 }
+
+.lockedElement {
+  pointer-events: none;
+  opacity: .3;
+}
 /* Control bar styling */
 #controlsBar{
   width: 100%;
@@ -161,7 +166,6 @@ input[type=text]:hover, input[type=password]:hover{
   position: relative;
   border-radius: 20px;
   box-shadow: 3px 3px 6px 7px #0d4b86 inset;
-
 }
 
 .generalSubmitButton{
@@ -205,6 +209,7 @@ input[type=text]:hover, input[type=password]:hover{
   border-radius: 7px;
   color: white;
   position: relative;
+  opacity: .7;
 }
 
 .closeSpan{

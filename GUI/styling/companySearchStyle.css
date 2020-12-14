@@ -39,6 +39,7 @@
   top: 0;
   outline: none;
   text-align: justify;
+  font-weight: 800;
 }
 .toggleMovement{
   width: 20%;
@@ -81,43 +82,104 @@
 
 /* Home Section Style */
 
+
 .homeSectionContainer{
   width: 40%;
-  height: 80%;
+  height: 81%;
   margin-left: 30%;
-  margin-top: 5%;
+  margin-top: 3%;
   position: relative;
+  border-top-left-radius: 40px;
+  border-bottom-right-radius: 40px;
+  background: rgba(36,51,65, 1);
+  opacity: .9;
 }
+
 .homeSectionTextArea{
   width: 100%;
-  height: 55%;
+  height: 45%;
   text-align: center;
   overflow: hidden;
+  text-overflow: ellipsis;
 }
 .homeSectionInputArea{
   width: 100%;
   height: 30%;
-  margin-top: 5.5%;
+  margin-top: 25%;
 }
+
 .homeSectionConnectEntry{
-  width: 40%;
-  margin: 3% 0 0 28.5%;
-  padding-left: 2.5%;
-  padding-right: 2.5%;
-  border-left: 0;
-  border-right: 0;
-  border-top: 0;
-  border-bottom: 1px solid grey;
+  width: 30%;
+  border: 2px solid grey;
+  border-radius: 5px;
   background: transparent;
   text-align: center;
+  color: white;
+  outline: none;
+  transition: width .3s;
 }
+
+
+.homeSectionConnectEntry::placeholder{
+  color: white;
+  opacity: .7;
+}
+
+.homeSectionConnectEntry:focus::placeholder{
+  color: transparent;
+}
+
+.homeSectionConnectEntry:valid{
+  border: 2px solid #39ff14;
+}
+
+.homeSectionConnectEntry:not(:placeholder-shown):invalid{
+  border: 2px solid #fe0002;
+}
+
+.homeSectionConnectEntry:not(:focus):hover{
+  background: rgba(128,128,128, .1);
+}
+
+.homeSectionConnectEntry:focus{
+    width: 40%;
+    border: 2px solid white !important;
+}
+
+.homeSectionConnectEntryDiv:focus-within:before{
+  content: 'Identifier';
+  margin-top: -5px;
+  margin-left: 15px;
+  font-size: 12px;
+  display: inline-block;
+  margin-top: -12px;
+  position: absolute;
+  padding: 0 5px;
+  background: rgba(36,51,65, 1);
+  color: white;
+}
+
+.homeSectionConnectButton{
+  display: inline-block;
+  width: 35%;
+  height: 100%;
+  border: 0;
+  outline: none;
+  transition: .3s;
+  background: radial-gradient(#0d4b86,#121c25);
+  color: white;
+  box-shadow: 3px 3px 6px 7px #0d4b86 inset;
+  border-radius: 5px;
+}
+
 .homeSetionImageArea{
   position: absolute;
   width: 100%;
-  height: 40%;
-  top: 30%;
+  height: 60%;
+  top: 25%;
   opacity: .5;
   z-index: -1;
+  filter: invert(50%);
 }
 #avatarHolder{
   width: 40%;
@@ -133,7 +195,6 @@
   font-size: 250%;
   font-weight: 900;
   max-width: 98%;
-  word-wrap:break-word;
 }
 #homeSectionConnectImage{
   width: 100%;
@@ -151,20 +212,32 @@
 .companySectionContainer{
   width: 100%;
   height: 85%;
-  margin-top: 5%;
+  margin-top: 3%;
 }
 .companySectionContent{
-  width: 50%;
+  width: 40%;
+  height: 95%;
+  margin-top: 2.5%;
+  margin-left: 30%;
+  background: rgba(36,51,65, 1);
+  border-top-left-radius: 40px;
+  border-bottom-right-radius: 40px;
+}
+
+.companySectionFields{
+  width: 100%;
   height: 100%;
-  z-index: 1;
+  color: white;
 }
 .companySectionTitleArea{
-  width: 75%;
+  width: 100%;
   height: 15%;
+  margin-top: 2.5%;
+  float: left;
 }
 
 .companySectionInputArea{
-  width: 75%;
+  width: 100%;
   height: 65%;
 }
 .companySectionEntryFormArea{
@@ -172,41 +245,98 @@
   height: 100%;
 }
 .companySetionImageArea{
-  width: 50%;
+  width: 38.5%;
   height: 50%;
   z-index: -1;
-  opacity: .2;
+  opacity: .1;
   position: absolute;
-  left: 24.5%;
-  top: 30%;
+  filter: invert(50%);
+  left: 30%;
+  top: 25%;
 }
 
-.companySectionRegisterEntry{
-  width: 80%;
-  margin-top: 2%;
-  border-left: 0;
-  border-right: 0;
-  border-top: 0;
-  border-bottom: 1px solid grey;
+.companySectionEntryFormArea textarea::placeholder, .companySectionEntryFormArea input::placeholder{
+  opacity: .7;
+  color: white;
+}
+
+.companySectionEntryFormArea textarea:focus::placeholder, .companySectionEntryFormArea input:focus::placeholder{
+  color: transparent;
+}
+
+.companySectionEntryFormArea textarea:valid, .companySectionEntryFormArea input:valid, .companySectionEntryFormArea input:disabled{
+  border: 2px solid #39ff14;
+}
+
+.companySectionEntryFormArea textarea:not(:placeholder-shown):invalid, .companySectionEntryFormArea input:not(:placeholder-shown):invalid{
+  border: 2px solid #fe0002;
+}
+
+.companySectionEntryFormArea textarea, .companySectionEntryFormArea input{
+  width: 60%;
+  border: 2px solid grey;
+  border-radius: 5px;
   background: transparent;
+  color: white;
+  outline: none;
+  transition: width .3s;
+}
+
+.companySectionPrimaryInputHolder{
+  margin-top: 3.1%;
+}
+
+.companySectionInputHolder input:not(:focus):hover, .companySectionInputHolder textarea:not(:focus):hover{
+  background: rgba(128,128,128, .1);
+}
+
+.companySectionInputHolder:focus-within:before{
+  content: '';
+  margin-top: -5px;
+  margin-left: 15px;
+  font-size: 12px;
+  display: inline-block;
+  margin-top: -12px;
+  position: absolute;
+  padding: 0 5px;
+  background: rgba(36,51,65, 1);
+}
+
+#titleCompanySectionHolder:focus-within:before{
+  content: 'Title';
+}
+#identifierCompanySectionHolder:focus-within:before{
+  content: 'Identifier';
+}
+#locationCompanySectionHolder:focus-within:before{
+  content: 'Location';
+}
+#descriptionCompanySectionHolder:focus-within:before{
+  content: 'Description';
+}
+
+#companySectionCheckBoxButton span{
+  color: white;
+}
+
+
+.companySectionRegisterEntry:focus, .companySectionTextArea:focus{
+    width: 70%;
+    border: 2px solid white !important;
 }
 
 .companySectionTextArea{
   resize: none;
-  background: transparent;
-  transition: .5s;
-  border-left: 0;
-  border-right: 0;
-  border-top: 0;
-  border-bottom: 1px solid grey;
-  width: 80%;
-  height: 30px;
+  height: auto;
   overflow: hidden;
+}
+
+.companySectionTextArea:focus{
+  height: 100px;
 }
 
 .companySectionTextArea:hover{
   background: rgba(64,59,74, .05);
-  transition: 0s;
 }
 
 .companySectionTextArea:focus{
@@ -220,6 +350,19 @@
   margin-right: 9.5%;
 }
 
+.companySectionSubmitButton{
+  display: inline-block;
+  width: 35%;
+  height: 100%;
+  border: 0;
+  outline: none;
+  transition: .3s;
+  background: radial-gradient(#0d4b86,#121c25);
+  color: white;
+  box-shadow: 3px 3px 6px 7px #0d4b86 inset;
+  border-radius: 5px;
+}
+
 #companySectionCompanyImage{
   width: 100%;
   height: 100%;
@@ -231,7 +374,7 @@
   width: 80%;
   height: 80%;
   margin-left: 10%;
-  margin-top: 6.5%;
+  margin-top: 3%;
   position: relative;
 }
 
@@ -274,16 +417,20 @@
 }
 
 .accountSectionGreetingArea{
-  width: 100%;
+  width: 80%;
   height: 50%;
   margin-top: 3%;
   overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .accountSectionEmailArea{
-  width: 100%;
+  width: 80%;
   height: 30%;
   overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .accountSectionLegend {
@@ -425,9 +572,10 @@
 
 .accountSectionEnrolledCompanyDiv{
   width: 100%;
-  height: 25%;
+  height: 30%;
   display: flex;
   position: relative;
+  overflow: hidden;
   margin-top: 5%;
 }
 .accountSectionLoadedCompaniesContainer{
@@ -449,6 +597,7 @@
 .accountSectionCompanyAvatar{
   width: 100%;
   height: 100%;
+  border-radius: 5px;
 }
 
 .accountSectionEnrolledCompanySplitSide{
@@ -483,20 +632,79 @@
 }
 
 #accountSectionNewValueField{
-  width: 80%;
+  width: 60%;
   margin-top: 2%;
-  border-left: 0;
-  border-right: 0;
-  border-top: 0;
-  border-bottom: 1px solid grey;
+  border: 2px solid grey;
   background: transparent;
-  color: white;
   resize: none;
+  transition: width .3s;
+  color: white;
+  outline: none;
+  border-radius: 5px;
 }
 
-#accountSectionNewValueField:hover{
-  background: rgba(255,255,255, .05);
-  transition: 0s;
+#accountSectionNewValueField:focus{
+  width: 80%;
+  border: 2px solid white !important;
+}
+
+#accountSectionNewValueField::placeholder{
+  opacity: .7;
+  color: white;
+}
+
+#accountSectionNewValueField:focus::placeholder{
+  color: transparent;
+}
+
+#accountSectionNewValueField:valid{
+  border: 2px solid #39ff14;
+}
+
+#accountSectionNewValueField:not(:placeholder-shown):invalid{
+  border: 2px solid #fe0002;
+}
+
+#accountSectionNewValueField:not(:focus):hover{
+  background: rgba(128,128,128, .1);
+}
+
+.accountSectionNewValueContainer:focus-within:before{
+  content: '';
+  margin-top: -6px !important;
+  margin-left: 15px;
+  font-size: 12px;
+  display: inline-block;
+  margin-top: -12px;
+  position: absolute;
+  padding: 0 5px;
+  background: rgba(36,51,65, 1);
+  color: white;
+  float: left;
+}
+
+.accountSectionNewValueContainer textarea:focus{
+  height: 80px !important;
+}
+
+#accountSectionNewValueFirstNameContainer:focus-within:before{
+  content: 'First Name';
+}
+
+#accountSectionNewValueLastNameContainer:focus-within:before{
+  content: 'Last Name';
+}
+
+#accountSectionNewValueCityContainer:focus-within:before{
+  content: 'City';
+}
+
+#accountSectionNewValueCountryContainer:focus-within:before{
+  content: 'Country';
+}
+
+#accountSectionNewValueAddressContainer:focus-within:before{
+  content: 'Address';
 }
 
 #accountSectionAddressRow{
@@ -517,41 +725,59 @@
 .searchSectionContent{
   width: 80%;
   height: 80%;
-  margin-top: 6%;
+  margin-top: 2%;
   margin-left: 10%;
+  position: relative;
 }
 
 .searchSectionMenu{
-  width: 50%;
+  width: 70%;
   height: 10%;
-  margin-left: 25%;
-  margin-top: 2.5%;
+  margin-left: 15%;
   float: left;
   display: flex;
+  justify-content: center;
 }
 
 #searchSectionFilterInput{
-  width: 80%;
-  border: 1px solid grey;
+  width: 30%;
+  height: 50%;
+  border: 2px solid grey;
   border-radius: 5px;
   background: transparent;
   outline: none;
+  transition: width .3s;
+  display: block;
+}
+
+#searchSectionFilterInput:focus::placeholder{
+  color: transparent;
+}
+
+#searchSectionFilterInput:focus{
+    width: 50%;
+    border: 2px solid black !important;
 }
 
 #searchSectionFilterInput:hover{
   background: rgba(64,59,74, .05);
 }
 
-
-#searchSectionFilterButton{
+#searchSectionSearchButton, #searchSectionFilterButton{
   display: inline-block;
-  width: 9%;
-  height: 60%;
+  width: 6%;
   margin-top: 2%;
+  margin-left: 2.5%;
+  margin-right: 2.5%;
+  height: 50%;
   border: 0;
   background: transparent;
   outline: none;
-  margin-left: 2%;
+}
+
+.searchSectionButtonIcon{
+  width: 100%;
+  height: 100%;
 }
 
 .searchSectionResults{
@@ -559,7 +785,7 @@
   height: 90%;
   float: left;
   margin-top: 2.5%;
-  margin-left: 5%;
+  margin-left: 10%;
   overflow-y: auto;
   overflow-x: hidden;
   display: flex;
@@ -595,7 +821,6 @@
   z-index: 1;
   border-radius: 10px;
   background: #243341;
-
 }
 
 .upperSearchSectionPopupWindowArea{
@@ -664,6 +889,10 @@
   margin-top: 4%;
   width: 100%;
   height: 40%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: white;
 }
 
 .searchSectionCompanySpanLabel, .searchSectionCEOSpanLabel{
@@ -691,6 +920,9 @@
   height: 20%;
   float: left;
   overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: white;
 }
 
 .popupLowerSpanHolder{
@@ -731,4 +963,230 @@
    width: 47.5%;
    height: 100%;
    margin-left: 2.5%;
+}
+
+.searchSectionNoCompanyWrapper{
+  max-width: 60%;
+  width: auto;
+  word-wrap: break-word;
+}
+
+
+#innerNoMatchSpan{
+  color: #4ad295;
+}
+
+.searchSectionFilterPopup{
+  position: absolute;
+  width: 35%;
+  height: 25%;
+  background: red;
+  left: 26.5%;
+  top: 17.5%;
+  z-index: 1;
+  border-radius: 10px;
+  background: #243341;
+}
+
+.searchSectionFilterPopup:before {
+  content: '';
+	position: absolute;
+	top: 0;
+	left: 17.5%;
+	width: 0;
+	height: 0;
+	border: 15px solid transparent;
+	border-bottom-color: #243341;
+	border-top: 0;
+	margin-left: -20px;
+	margin-top: -15px;
+}
+
+.searchSectionTriHolder{
+  width: 80%;
+  height: 30%;
+  display: flex;
+  margin-top: 2.5%;
+  margin-left: 10%;
+}
+
+.searchSectionFilterTriSplit{
+  width: 25%;
+  height: 100%;
+}
+
+.searchSectionArrowButton{
+  display: inline-block;
+  width: 75%;
+  height: 100%;
+  border: 0;
+  background: transparent;
+  outline: none;
+}
+
+.searchSectionFilterArrowImage{
+  width: 100%;
+  height: 100%;
+  filter: invert(100%);
+}
+
+.searchSectionFilterSpan{
+  color: white;
+  font-weight: 900;
+}
+
+
+
+/* Settings Section Style */
+
+
+.settingsSectionContainer{
+  width: 100%;
+  height: 85%;
+  margin-top: 3%;
+}
+
+.settingsSectionContent{
+  width: 40%;
+  height: 95%;
+  margin-top: 2.5%;
+  margin-left: 30%;
+  background: rgba(36,51,65, 1);
+  border-top-left-radius: 40px;
+  border-bottom-right-radius: 40px;
+  position: relative;
+  overflow: hidden;
+  opacity: .99;
+}
+
+.settingsSectionUpperArea{
+  width: 100%;
+  height: 15%;
+}
+
+.settingsSectionTabButtonHolder{
+  width: 65%;
+  height: 50%;
+  margin-top: 5%;
+  margin-left: 17.5%;
+  position: relative;
+  /* box-shadow: 3px 3px 6px 7px #0d4b86 inset; */
+  float: left;
+  display: flex;
+  opacity: .99;
+}
+.settingsSectionTabButtonHolder:after{
+  content: "";
+  box-shadow: 3px 3px 6px 4px #0d4b86 inset;
+  border-radius: 20px;
+  height: 100%;
+  position: absolute;
+  width: 100%;
+  left: 0px;
+  top: 0px;
+}
+
+#settingsSectionTabSlider{
+  width: 50%;
+  height: 100%;
+  transition: .5s;
+  position: absolute;
+  background: radial-gradient(#0d4b86,#121c25);
+  border-radius: 20px;
+  cursor: pointer;
+  left: 0;
+  z-index: -1;
+}
+
+.settingsSectionTabToggleButton{
+  display: inline-block;
+  text-align: center;
+  width: 50%;
+  height: 100%;
+  border: 0;
+  outline: none;
+  transition: .3s;
+  background: transparent;
+  color: white;
+  z-index: 1;
+}
+
+.settingsSectionLowerArea{
+  width: 100%;
+  height: 65%;
+  margin-top: 7.5%;
+  transition: .3s;
+  position: absolute;
+  color: white;
+}
+
+.settingsOptionContainer{
+  width: 85%;
+  height: auto;
+  min-height: 17.5%;
+  margin-left: 7.5%;
+  margin-top: 2.5%;
+}
+
+
+.settingsOptionSpanHolder{
+  padding-left: 2.5%;
+  padding-right: 2.5%;
+  padding-bottom: 1%;
+  float: left;
+  transition: .2s;
+}
+
+.settingsOptionSpanHolder:hover{
+  background: rgba(0, 0, 0, .1);
+  border-radius: 10px;
+  font-size: 105%;
+  cursor: pointer;
+}
+
+.settingsOptionTooltip{
+  width: 100%;
+  float: left;
+}
+
+.settingsOptionTooltip p{
+  padding-left: 2.5%;
+  line-height: 1.3;
+  color: rgba(255, 255, 255, .5);
+  font-size: 80% !important;
+}
+
+.settingsOptionTogglerContainer{
+  float: right;
+  display: flex;
+  position: relative;
+  background: rgba(255, 255, 255, .1);
+  border-radius: 5px;
+}
+
+.settingsOptionTogglerContainer button{
+  border: 0;
+  background: transparent;
+  outline: none;
+  color: white;
+}
+
+.settingsOptionSlider{
+  position: absolute;
+  width: 50%;
+  height: 100%;
+  left: 0;
+  background: green;
+  border-radius: 5px;
+  z-index: -1;
+  transition: .3s;
+}
+
+.settingsSectionImageArea{
+  width: 100%;
+  height: 60%;
+  position: absolute;
+  z-index: -1;
+  opacity: .1;
+  margin-top: 20%;
 }
