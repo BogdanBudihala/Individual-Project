@@ -17,7 +17,7 @@
       <div class="screen">
         <div class="splitside" style="margin-left: 25%">
           <div class="textArea">
-            <span id="greetingSpan"></span>
+            <div class="spanContainer"><span id="greetingSpan"></span></div>
             <span><br>Before you proceed further, you must register a worker profile. You may update the details later on.
               Press the button below to load the registration form.</span>
             <button type="button" class="arrowButton" value=0 onClick="expandWindow(this.value)">
@@ -35,13 +35,13 @@
           <div class="entryFormArea" align="center">
             <form style="height: 100%; position: relative;" spellcheck="false" id="workerForm">
               <input id="workerFirst" class="workerRegisterEntry" type="text" placeholder="First Name" required minlength="3" maxlength="30"
-                pattern="([a-zA-Z]+[\. -]{0,1})+[a-zA-Z]+">
+                pattern="([a-zA-Z]+[\. '\(\)-]{0,1})+[a-zA-Z]+">
               <input id="workerLast" class="workerRegisterEntry" type="text" placeholder="Last Name" required minlength="3" maxlength="30"
-               pattern="([a-zA-Z]+[\. -]{0,1})+[a-zA-Z]+">
+               pattern="([a-zA-Z]+[\. '\(\)-]{0,1})+[a-zA-Z]+">
               <input id="workerCity" class="workerRegisterEntry" type="text" placeholder="City" required minlength="3" maxlength="30"
-               pattern="([a-zA-Z]+[\. -]{0,1})+[a-zA-Z]+">
+               pattern="([a-zA-Z]+[\. '\(\)-]{0,1})+[a-zA-Z]+">
               <input id="workerCountry" class="workerRegisterEntry" type="text" placeholder="State/Province" required minlength="3" maxlength="30"
-               pattern="([a-zA-Z]+[\. -]{0,1})+[a-zA-Z]+">
+               pattern="([a-zA-Z]+[\. '\(\)-]{0,1})+[a-zA-Z]+">
               <textarea id="workerAddress" placeholder="Address" required minlength="10"
               class="textAreaInput workerRegisterEntry" maxlength="100"></textarea>
           </form>
