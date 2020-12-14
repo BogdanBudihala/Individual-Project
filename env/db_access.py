@@ -3,9 +3,10 @@ import psycopg2
 
 class DBManager(object):
 
-    def __init__(self):
+    def __init__(self, user, password):
         try:
-            self.__conn = psycopg2.connect(database="Registry", user="genericuser", password="proiectindiv")
+            self.__conn = psycopg2.connect(database="Registry", user=user, password=password,
+                                           host="127.0.0.1")
             self.__curs = self.__conn.cursor()
         except:
             raise Exception("0,Unable to establish connection with the Database.")
@@ -16,25 +17,27 @@ class DBManager(object):
 
     def addAccount(self, username, password, email):
         self.__curs.execute(
-            '''insert into accounts(username, password, email) values (%s,%s,%s)''',
-            (username, password, email)
+            '''insert into account(username, password) values (%s,%s)''', (username, password)
+        )
+        self.__curs.execute(
+            '''insert into emailaddress(paired_account, email) values (%s,%s)''', (username, email)
         )
         self.__conn.commit()
 
     def addCompany(self, identifier, pairedAcc, title, location, desc):
         self.__curs.execute(
-            '''insert into companies(id, paired_account, title, location, description) 
+            '''insert into company(id, paired_account, title, location, description) 
             values (%s,%s,%s,%s,%s)''', (identifier, pairedAcc, title, location, desc)
         )
         self.__curs.execute(
-            '''insert into employees(paired_account, paired_company) values (%s,%s)''',
+            '''insert into employee(paired_account, paired_company) values (%s,%s)''',
             (pairedAcc, identifier)
         )
         self.__conn.commit()
 
     def addWorkerProfile(self, pairedAcc, firstName, lastName, city, country, address):
         self.__curs.execute(
-            '''insert into workersprofile(paired_account, first_name, last_name, city, country, address) 
+            '''insert into worker(paired_account, first_name, last_name, city, country, address) 
             values (%s,%s,%s,%s,%s,%s)''', (pairedAcc, firstName, lastName, city, country, address)
         )
         self.__conn.commit()
@@ -42,19 +45,18 @@ class DBManager(object):
     def addEmployee(self, pairedAcc, pairedComp):
         # More args to be added
         self.__curs.execute(
-            '''insert into employees(paired_account, paired_company) values (%s,%s)''',
-            (pairedAcc, pairedComp)
+            '''insert into employee(paired_account, paired_company) values (%s,%s)''', (pairedAcc, pairedComp)
         )
         self.__conn.commit()
 
     def loginEmployee(self, pairedAcc, pairedComp):
         self.__curs.execute(
-            '''select * from companies where id=%s''', (pairedComp,)
+            '''select * from company where id=%s''', (pairedComp,)
         )
         if self.__curs.fetchone() is None:
             raise Exception("0,Company is not present in Database.")
         self.__curs.execute(
-            '''select * from employees where paired_account=%s and paired_company=%s''', (pairedAcc, pairedComp)
+            '''select * from employee where paired_account=%s and paired_company=%s''', (pairedAcc, pairedComp)
         )
         if self.__curs.fetchone() is None:
             raise Exception("1,Username and company ID combination is not present in Database.")
@@ -62,7 +64,7 @@ class DBManager(object):
 
     def fetchPassword(self, username):
         self.__curs.execute(
-            '''select password from accounts where username=%s''', (username,)
+            '''select password from account where username=%s''', (username,)
         )
         retVal = self.__curs.fetchone()
         if retVal is None:
@@ -70,12 +72,12 @@ class DBManager(object):
         return retVal[0]
 
     def fetchWorkerProfile(self, username):
-        self.__curs.execute('''select * from workersprofile where paired_account=%s''', (username,))
+        self.__curs.execute('''select * from worker where paired_account=%s''', (username,))
         return True if self.__curs.fetchone() is not None else False
 
     def getWorkerDetails(self, username):
         self.__curs.execute(
-            '''select * from workersprofile where paired_account=%s''', (username,)
+            '''select * from worker where paired_account=%s''', (username,)
         )
         retVal = self.__curs.fetchone()
         if retVal is None:
@@ -83,28 +85,28 @@ class DBManager(object):
         return retVal[1:]
 
     def fetchUserAvatar(self, username):
-        self.__curs.execute('''select avatar from workersavatar where paired_account=%s''', (username,))
+        self.__curs.execute('''select avatar from workeravatar where paired_account=%s''', (username,))
         retVal = self.__curs.fetchone()
         return retVal[0] if retVal is not None else None
 
     def updateUserAvatar(self, username, avatar):
         binaryImage = avatar.read()
-        self.__curs.execute('''update workersavatar set avatar=%s where paired_account=%s''', (binaryImage, username))
+        self.__curs.execute('''update workeravatar set avatar=%s where paired_account=%s''', (binaryImage, username))
         self.__conn.commit()
 
     def removeUserAvatar(self, username):
-        self.__curs.execute('''delete from workersavatar where paired_account=%s''', (username,))
+        self.__curs.execute('''delete from workeravatar where paired_account=%s''', (username,))
         self.__conn.commit()
 
     def addUserAvatar(self, username, avatar):
         binaryImage = avatar.read()
-        self.__curs.execute('''insert into workersavatar(paired_account, avatar) values(%s, %s)''',
+        self.__curs.execute('''insert into workeravatar(paired_account, avatar) values(%s, %s)''',
                             (username, binaryImage))
         self.__conn.commit()
 
     def getAccountEmailAddress(self, username):
         self.__curs.execute(
-            '''select email from accounts where username=%s''', (username,)
+            '''select email from emailaddress where paired_account=%s''', (username,)
         )
         retVal = self.__curs.fetchone()
         if retVal is None:
@@ -113,36 +115,36 @@ class DBManager(object):
 
     def getEnrolledCompanies(self, username):
         self.__curs.execute(
-            '''select C1.id, C1.title, C2.avatar from companies C1 left join companiesavatar C2 on C1.id=C2.comp_id 
-            where C1.paired_account=%s''', (username,)
+            '''select C0.paired_company, 
+                (select title from company where id = C0.paired_company) title,
+                (select avatar from companyavatar where paired_company = C0.paired_company) avatar from 
+                (select paired_company from employee where paired_account=%s) C0''', (username,)
         )
-        retVal = self.__curs.fetchall()
-        if retVal is None:
-            raise Exception("0,No paired account associated with this user.")
-        return retVal
+
+        return self.__curs.fetchall()
 
     def updateWorkerProfile(self, username, actionType, newValue):
         columnIdentifier = ('first_name', 'last_name', 'city', 'country', 'address')
-        queryBeforeParamBind = f'update workersprofile set {columnIdentifier[actionType]}=%s where paired_account=%s'
+        queryBeforeParamBind = f'update worker set {columnIdentifier[actionType]}=%s where paired_account=%s'
         self.__curs.execute(queryBeforeParamBind, (newValue, username))
         self.__conn.commit()
 
     def getCompaniesMatchingKeyPhrase(self, username, keyPhrase, limit):
         sqlQuery = \
             '''
-                    select C.id, C.title, (select avatar from companiesavatar where C.id = comp_id) avatar
-                    from companies C where id not in (select id from companies where paired_account=%(username)s)
+                    select C.id, C.title, (select avatar from companyavatar where C.id = paired_company) avatar
+                    from company C where C.id not in (select id from company where paired_account=%(username)s)
                     order by random() desc limit %(limit)s
         ''' \
                 if not keyPhrase else \
                 '''
-                    select Query.comp_id,
-                    (select title from companies where Query.comp_id = id) title,
-                    (select avatar from companiesavatar where Query.comp_id = comp_id) avatar
+                    select Query.paired_company,
+                    (select title from company where Query.paired_company = id) title,
+                    (select avatar from companyavatar where Query.paired_company = paired_company) avatar
                     from 
-                    (select comp_id from searchquery where search_terms @@ to_tsquery(%(keyphrase)s)
-                    and comp_id not in (select id from companies where paired_account=%(username)s)
-                    order by ts_rank(search_terms, to_tsquery(%(keyphrase)s)) desc limit %(limit)s) Query
+                    (select paired_company from searchquery where search_terms @@ to_tsquery('simple', %(keyphrase)s)
+                    and paired_company not in (select id from company where paired_account=%(username)s)
+                    order by ts_rank(search_terms, to_tsquery('simple', %(keyphrase)s)) desc limit %(limit)s) Query
         '''
         parameters = {'username': username, 'limit': limit} if not keyPhrase else \
             {'keyphrase': keyPhrase, 'username': username, 'limit': limit}
@@ -152,8 +154,8 @@ class DBManager(object):
     def fetchCompanyDetails(self, compID):
         self.__curs.execute(
             '''select location, title, description,
-               (select avatar from companiesavatar where comp_id=%(compID)s) avatar
-                from companies where id=%(compID)s''', {'compID': compID}
+               (select avatar from companyavatar where paired_company=%(compID)s) avatar
+                from company where id=%(compID)s''', {'compID': compID}
         )
         retVal = self.__curs.fetchone()
         if retVal is None:
@@ -163,10 +165,10 @@ class DBManager(object):
     def fetchCEODetails(self, compID):
         self.__curs.execute(
             '''select WP.first_name || ' ' || WP.last_name, 
-                (select email from accounts where username=P.paired_account) email,
-                (select avatar from workersavatar where paired_account=P.paired_account) avatar
-                from (select paired_account from companies where id=%s) P, 
-                (select paired_account, first_name, last_name from workersprofile) WP
+                (select email from emailaddress where paired_account=P.paired_account) email,
+                (select avatar from workeravatar where paired_account=P.paired_account) avatar
+                from (select paired_account from company where id=%s) P, 
+                (select paired_account, first_name, last_name from worker) WP
                 where WP.paired_account = P.paired_account''', (compID,)
         )
         retVal = self.__curs.fetchone()

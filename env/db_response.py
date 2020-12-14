@@ -4,8 +4,8 @@ from re import sub, search
 
 
 def attemptLogin(username):
-    __linker = DBManager()
     try:
+        __linker = DBManager(user='appcontrol', password='proiectindiv')
         __fetchedPass = __linker.fetchPassword(username)
         __workerProfile = __linker.fetchWorkerProfile(username)
         return {'success': True, 'message': None,
@@ -22,14 +22,14 @@ def attemptLogin(username):
 
 
 def attemptRegister(username, password, email):
-    __linker = DBManager()
     try:
+        __linker = DBManager(user='appcontrol', password='proiectindiv')
         __linker.addAccount(username, password, email)
         return {'success': True, 'message': "Account has been registered successfully.", 'parameters': None}
     except Exception as db_except:
-        if 'constraint "user_taken"' in str(db_except):
+        if 'constraint "account_username_pk"' in str(db_except):
             return {'success': False, 'message': "Username has already been taken.", 'parameters': None}
-        elif 'constraint "email_taken"' in str(db_except):
+        elif 'constraint "emailaddress_email_unique"' in str(db_except):
             return {'success': False, 'message': "Email address has already been taken.", 'parameters': None}
         else:
             return {'success': False, 'message': str(db_except), 'parameters': None}
@@ -42,12 +42,12 @@ def attemptReset(username, email):
 
 
 def attemptRegisterCompany(identifier, pairedAcc, title, location, desc):
-    __linker = DBManager()
     try:
-        __linker.addCompany(identifier, pairedAcc, title, location, desc)
+        __linker = DBManager(user='appuser', password='proiectindiv')
+        __linker.addCompany(identifier.lower(), pairedAcc, title, location, desc)
         return {'success': True, 'message': "Company has been registered successfully.", 'parameters': None}
     except Exception as db_except:
-        if 'constraint "id_taken"' in str(db_except):
+        if 'constraint "company_id_pk"' in str(db_except):
             return {'success': False, 'message': "Company identifier has already been taken.", 'parameters': None}
         else:
             return {'success': False, 'message': str(db_except), 'parameters': None}
@@ -56,8 +56,8 @@ def attemptRegisterCompany(identifier, pairedAcc, title, location, desc):
 
 
 def attemptRegisterWorkerProfile(pairedAcc, firstName, lastName, city, country, address):
-    __linker = DBManager()
     try:
+        __linker = DBManager(user='appuser', password='proiectindiv')
         __linker.addWorkerProfile(pairedAcc, firstName, lastName, city, country, address)
         return {'success': True, 'message': "Worker profile has been registered successfully.", 'parameters': None}
     except Exception as db_except:
@@ -67,8 +67,8 @@ def attemptRegisterWorkerProfile(pairedAcc, firstName, lastName, city, country, 
 
 
 def attemptAddEmployee(pairedAcc, pairedComp):
-    __linker = DBManager()
     try:
+        __linker = DBManager(user='appuser', password='proiectindiv')
         __linker.addEmployee(pairedAcc, pairedComp)
         return {'success': True, 'message': "Employee has been registered successfully.", 'parameters': None}
     except Exception as db_except:
@@ -78,17 +78,17 @@ def attemptAddEmployee(pairedAcc, pairedComp):
 
 
 def attemptLoginEmployee(pairedAcc, pairedComp):
-    __linker = DBManager()
     try:
+        __linker = DBManager(user='appuser', password='proiectindiv')
         __fetchedCompId = __linker.loginEmployee(pairedAcc, pairedComp)
         return {'success': True, 'message': None, 'parameters': {'identifier': __fetchedCompId}}
     except Exception as db_except:
         if '0,' in str(db_except):
-            return {'success': False, 'message': "Unable to connect to company: Company identifier is not valid.",
+            return {'success': False, 'message': "Company not found.",
                     'parameters': None}
         elif '1,' in str(db_except):
             return {'success': False,
-                    'message': "Unable to connect to company: User is not an active employee of the company.",
+                    'message': "User is not an active employee of the company.",
                     'parameters': None}
         else:
             return {'success': False, 'message': str(db_except), 'parameters': None}
@@ -97,8 +97,8 @@ def attemptLoginEmployee(pairedAcc, pairedComp):
 
 
 def attemptGatherWorkerDetails(username):
-    __linker = DBManager()
     try:
+        __linker = DBManager(user='appuser', password='proiectindiv')
         workerDetails = __linker.getWorkerDetails(username)
         return {'success': True, 'message': None,
                 'parameters': {'firstName': workerDetails[0], 'lastName': workerDetails[1],
@@ -111,14 +111,16 @@ def attemptGatherWorkerDetails(username):
 
 
 def attemptGatherAccountDetails(username):
-    __linker = DBManager()
     try:
+        __linker = DBManager(user='appuser', password='proiectindiv')
         workerDetails = __linker.getWorkerDetails(username)
         email = __linker.getAccountEmailAddress(username)
         companyInfo = __linker.getEnrolledCompanies(username)
-        for index in range(len(companyInfo)):
-            companyInfo[index] = (companyInfo[index][0], companyInfo[index][1],
-                                  _encode64DecodeUTF8Image(companyInfo[index][2]))
+
+        if companyInfo is not None:
+            for index in range(len(companyInfo)):
+                companyInfo[index] = (companyInfo[index][0], companyInfo[index][1],
+                                      _encode64DecodeUTF8Image(companyInfo[index][2]))
 
         return {'success': True, 'message': None,
                 'parameters': {'firstName': workerDetails[0], 'lastName': workerDetails[1], 'city': workerDetails[2],
@@ -132,8 +134,8 @@ def attemptGatherAccountDetails(username):
 
 
 def attemptReplaceAvatar(username, avatar):
-    __linker = DBManager()
     try:
+        __linker = DBManager(user='appuser', password='proiectindiv')
         hasAvatar = __linker.fetchUserAvatar(username)
         if hasAvatar is not None:
             __linker.updateUserAvatar(username, avatar) if avatar is not None else __linker.removeUserAvatar(username)
@@ -147,8 +149,8 @@ def attemptReplaceAvatar(username, avatar):
 
 
 def attemptLoadAvatar(username):
-    __linker = DBManager()
     try:
+        __linker = DBManager(user='appuser', password='proiectindiv')
         imageAsString = _encode64DecodeUTF8Image(__linker.fetchUserAvatar(username))
         return {'success': True, 'message': "Avatar loaded successfully.", 'parameters':
             {'avatar': imageAsString}}
@@ -163,8 +165,8 @@ def attemptUpdateWorkerDetails(username, actionType, newValue):
     if actionType not in range(0, len(columnIdentifier)):
         return {'succes': False, 'message': f'''Invalid action type supplied. Action types are indexed from 0 to
                     {len(columnIdentifier) - 1}.''', 'parameters': None}
-    __linker = DBManager()
     try:
+        __linker = DBManager(user='appuser', password='proiectindiv')
         __linker.updateWorkerProfile(username, actionType, newValue)
         return {'success': True, 'message': f"{columnIdentifier[actionType]} updated successfully.", 'parameters': None}
     except Exception as db_except:
@@ -174,7 +176,6 @@ def attemptUpdateWorkerDetails(username, actionType, newValue):
 
 
 def attemptLoadSearchResults(username, keyPhrase, limit):
-    __linker = DBManager()
     if not search("^[1-9][0-9]{0,4}$|^10000$", str(limit)):
         return {'success': False,
                 'message': '''Invalid limit parameter supplied. Parameter must be integer between [1, 10000].''',
@@ -184,6 +185,7 @@ def attemptLoadSearchResults(username, keyPhrase, limit):
                 'message': "Invalid key phrase parameter supplied. Parameter must be string.",
                 'parameters': None}
     try:
+        __linker = DBManager(user='appuser', password='proiectindiv')
         fetchedCompanies = __linker.getCompaniesMatchingKeyPhrase(username, _sanitizeKeyPhrase(keyPhrase), int(limit))
         for index in range(len(fetchedCompanies)):
             fetchedCompanies[index] = (fetchedCompanies[index][0], fetchedCompanies[index][1],
@@ -197,8 +199,8 @@ def attemptLoadSearchResults(username, keyPhrase, limit):
 
 
 def attemptLoadCompany(compID):
-    __linker = DBManager()
     try:
+        __linker = DBManager(user='appuser', password='proiectindiv')
         fetchedCompany = __linker.fetchCompanyDetails(compID)
         fetchedCompany = (fetchedCompany[0], fetchedCompany[1], fetchedCompany[2], _encode64DecodeUTF8Image(
             fetchedCompany[3]))
@@ -214,8 +216,8 @@ def attemptLoadCompany(compID):
 
 
 def attemptLoadCEO(compID):
-    __linker = DBManager()
     try:
+        __linker = DBManager(user='appuser', password='proiectindiv')
         fetchedCEO = __linker.fetchCEODetails(compID)
         fetchedCEO = (fetchedCEO[0], fetchedCEO[1], _encode64DecodeUTF8Image(fetchedCEO[2]))
         return {'success': True, 'message': "CEO loaded successfully.", 'parameters':
@@ -227,7 +229,6 @@ def attemptLoadCEO(compID):
         return {'success': False, 'message': str(db_except), 'parameters': None}
     finally:
         del __linker
-
 
 def _encode64DecodeUTF8Image(binaryData):
     return b64encode(binaryData).decode('utf-8') if binaryData is not None else None
