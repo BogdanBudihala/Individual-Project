@@ -134,6 +134,7 @@ input[type=text]:hover, input[type=password]:hover{
   text-align: center;
   color: white;
   border-radius: 10px;
+  box-shadow: 5px 8px 16px 1px rgba(0,0,0,0.5);
   z-index: 99;
 }
 .promptLogOutButton{
@@ -210,6 +211,7 @@ input[type=text]:hover, input[type=password]:hover{
   color: white;
   position: relative;
   opacity: .7;
+  box-shadow: 5px 8px 16px 1px rgba(0,0,0,0.5);
 }
 
 .closeSpan{

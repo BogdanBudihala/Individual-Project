@@ -10,8 +10,10 @@
   height: 6%;
   background: rgba(64,59,74, .4);
   display: flex;
-  border-bottom: 1px grey solid;
   margin-left: -8px;
+  box-shadow: 5px 8px 16px 1px rgba(0,0,0,0.5);
+  border-bottom-left-radius: 25px;
+  border-bottom-right-radius: 25px;
 }
 
 .marginDiv{
@@ -92,7 +94,8 @@
   border-top-left-radius: 40px;
   border-bottom-right-radius: 40px;
   background: rgba(36,51,65, 1);
-  opacity: .9;
+  opacity: .99;
+  box-shadow: 5px 8px 16px 1px rgba(0,0,0,0.5);
 }
 
 .homeSectionTextArea{
@@ -214,7 +217,8 @@
   height: 85%;
   margin-top: 3%;
 }
-.companySectionContent{
+
+.companySectionContentHolder{
   width: 40%;
   height: 95%;
   margin-top: 2.5%;
@@ -222,6 +226,30 @@
   background: rgba(36,51,65, 1);
   border-top-left-radius: 40px;
   border-bottom-right-radius: 40px;
+  box-shadow: 5px 8px 16px 1px rgba(0,0,0,0.5);
+  position: relative;
+  overflow: hidden;
+}
+.companySectionContent{
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  transition: .5s;
+}
+
+.companySectionSelectPageSpanHolder{
+  color: white;
+  margin-top: 10%;
+  font-size: 120%;
+}
+
+.companySectionInnerContent{
+  width: 100%;
+  height: 100%;
+}
+
+.companySectionSelectPageButtonHolder{
+  margin-top: 62.5%;
 }
 
 .companySectionFields{
@@ -244,15 +272,31 @@
   width: 100%;
   height: 100%;
 }
+
+:root{
+  --companyBeforeWidth: 100%;
+}
+
+.companySectionContentHolder:first-child::before{
+  content: "";
+  background-image: url('../graphics/Company.svg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 80%;
+  filter: invert(50%);
+  position: absolute;
+  width: var(--companyBeforeWidth);
+  height: 100%;
+  opacity: .7;
+  transition: .5s;
+}
 .companySetionImageArea{
-  width: 38.5%;
-  height: 50%;
-  z-index: -1;
-  opacity: .1;
+  width: 70%;
+  height: 80%;
+  opacity: .9;
   position: absolute;
   filter: invert(50%);
-  left: 30%;
-  top: 25%;
+  z-index: -1;
 }
 
 .companySectionEntryFormArea textarea::placeholder, .companySectionEntryFormArea input::placeholder{
@@ -353,6 +397,19 @@
 .companySectionSubmitButton{
   display: inline-block;
   width: 35%;
+  height: 100%;
+  border: 0;
+  outline: none;
+  transition: .3s;
+  background: radial-gradient(#0d4b86,#121c25);
+  color: white;
+  box-shadow: 3px 3px 6px 7px #0d4b86 inset;
+  border-radius: 5px;
+}
+
+.companySectionSelectPageButton{
+  display: inline-block;
+  width: 40%;
   height: 100%;
   border: 0;
   outline: none;
@@ -474,6 +531,7 @@
   border-radius: 10px;
   left: 35%;
   top: 40%;
+  box-shadow: 5px 8px 16px 1px rgba(0,0,0,0.5);
 }
 
 #popupWindowSelectFilePseudoButton{
@@ -821,6 +879,7 @@
   z-index: 1;
   border-radius: 10px;
   background: #243341;
+  box-shadow: 5px 8px 16px 1px rgba(0,0,0,0.5);
 }
 
 .upperSearchSectionPopupWindowArea{
@@ -1057,6 +1116,7 @@
   position: relative;
   overflow: hidden;
   opacity: .99;
+  box-shadow: 5px 8px 16px 1px rgba(0,0,0,0.5);
 }
 
 .settingsSectionUpperArea{
@@ -1114,7 +1174,7 @@
 .settingsSectionLowerArea{
   width: 100%;
   height: 65%;
-  margin-top: 7.5%;
+  margin-top: 5%;
   transition: .3s;
   position: absolute;
   color: white;
@@ -1128,6 +1188,10 @@
   margin-top: 2.5%;
 }
 
+.settingsCompanyTab{
+  height: 100%;
+  transition: .1s;
+}
 
 .settingsOptionSpanHolder{
   padding-left: 2.5%;
@@ -1162,6 +1226,7 @@
   position: relative;
   background: rgba(255, 255, 255, .1);
   border-radius: 5px;
+  box-shadow: 5px 8px 16px 1px rgba(0,0,0,0.5);
 }
 
 .settingsOptionTogglerContainer button{
@@ -1189,4 +1254,102 @@
   z-index: -1;
   opacity: .1;
   margin-top: 20%;
+}
+
+.settingsCompanyDropdownContainer{
+  width: 100%;
+  height: 12.5%;
+  display: flex;
+  justify-content: center;
+}
+
+.settingsCompanyDropdownSpan{
+  font-weight: 600;
+  color: white;
+}
+
+.settingsCompanyDropdown{
+  width: 50%;
+  height: 100%;
+  background: rgb(15, 15, 25);
+  margin-left: 2.5%;
+  position: relative;
+  border-bottom-left-radius: 5px;
+  border-top-left-radius: 5px;
+  box-shadow: 5px 8px 16px 1px rgba(0,0,0,0.5);
+}
+
+
+.settingsCompanyDropdown:after{
+  content: '';
+  width: 10%;
+  height: 100%;
+  background: rgb(15, 15, 25) url("../graphics/dropdown.png");
+  background-size: 70% 50%;
+  background-repeat: no-repeat;
+  background-position: center;
+  position: absolute;
+  right: -10%;
+  top: 0;
+  border-bottom-right-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.settingsRegisteredCompaniesContainer{
+  position: absolute;
+  width: 100%;
+  height: auto;
+  max-height: 600%;
+  top: 100%;
+  background: #374049;
+  opacity: 1;
+  z-index: 1;
+  box-shadow: 5px 8px 16px 1px rgba(0,0,0,0.5);
+  display: none;
+}
+
+.settingsRegisteredCompany{
+  width: 100%;
+  height: 37px;
+  display: flex;
+}
+
+.settingsRegisteredCompany:hover{
+  background: rgba(255,255,255, .1);
+  cursor: pointer;
+}
+
+.settingsRegisteredCompanyAvatar{
+  width: 15%;
+  height: 80%;
+  margin-top: 1.5%;
+  margin-left: 2.5%;
+  float: left;
+}
+
+.settingsRegisteredCompanyIdentifier{
+  width: 77.5%;
+  height: 80%;
+  margin-top: 1.5%;
+  margin-left: 2.5%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.settingsRegisteredCompanyAvatarImage{
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+}
+
+.settingsRegisteredCompanyIdentifierSpan{
+  color: white;
+}
+
+.settingsNoCompanySpan{
+  color: grey;
+  color: rgba(255, 255, 255, .5);
+  font-size: 80%;
+  padding-left: 5%;
 }

@@ -1,0 +1,512 @@
+.container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  float: left;
+  margin-left: -8px;
+}
+
+.sideBar{
+  width: 15%;
+  height: 90%;
+  position: relative;
+  margin-top: 3.3%;
+  float: left;
+}
+
+.sideBar::before{
+  content: "";
+  background: #243341;
+  width: 100%;
+  height: 100%;
+  box-shadow: 5px 8px 16px 1px rgba(0,0,0,0.5);
+  position: absolute;
+  z-index: -1;
+  border-top-right-radius: 45px;
+  border-bottom-right-radius: 45px;
+}
+
+.sideBarTop{
+  width: 100%;
+  height: 10%;
+}
+
+.sideBarMiddle{
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+
+#sideBarSlider{
+  width: 100%;
+  height: 32px;
+  background: radial-gradient(#0d4b86,#121c25);
+  box-shadow: 5px 8px 16px 1px rgba(0,0,0,0.5);
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  transition: .3s;
+  opacity: .7;
+}
+
+.sideBarBottom{
+  width: 100%;
+  height: 20%;
+  position: absolute;
+  bottom: 0;
+}
+
+.sideBarButton{
+  display: inline-block;
+  width: 100%;
+  height: 32px;
+  color: white;
+  outline: none;
+  border: 0;
+  font-size: 80%;
+  background: transparent;
+  text-align: justify;
+  padding-left: 25%;
+}
+
+.sideBarButtonDiv{
+  width: 100%;
+  height: 32px;
+  position: relative;
+}
+
+.sideBarButtonDiv img{
+  position: absolute;
+  z-index: -1;
+  top: 22.5%;
+  left: 5.5%;
+  width: 15%;
+  height: 60%;
+  filter: invert(100%);
+}
+
+.sideBarButton{
+  border-top: 2px solid white !important;
+}
+
+.sideBarCompanyAvatarHolder{
+  width: 60%;
+  height: 75%;
+  margin-top: 10%;
+  margin-left: 20%;
+  border-radius: 5px;
+  float: left;
+}
+
+.sideBarCompanyAvatarHolder:hover{
+  cursor: pointer;
+}
+
+
+#sideBarCompanyAvatar{
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+}
+
+.content{
+  width: 60%;
+  height: 80%;
+  float: right;
+  margin-right: 12.5%;
+  margin-top: 6.25%;
+}
+
+.applicationsContent, .feedContent{
+  width: 80%;
+  height: 100%;
+  margin-left: 10%;
+  position: relative;
+  border-top-left-radius: 40px;
+  border-bottom-right-radius: 40px;
+  background: rgba(36,51,65, 1);
+  opacity: .99;
+  box-shadow: 5px 8px 16px 1px rgba(0,0,0,0.5);
+  float: left;
+}
+
+.applicationsContent::before, .feedContent::before{
+  content: "";
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 80%;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: .15;
+  z-index: -1;
+}
+
+.applicationsContent::before{
+  background-image: url('../graphics/Resume.svg');
+}
+
+.feedContent::before{
+  background-image: url('../graphics/Feed.svg');
+}
+
+.contentWindowUpper{
+  width: 100%;
+  margin-top: 10%;
+  height: 7.5%;
+  font-size: 130%;
+  color: white;
+}
+
+.contentWindowLower{
+  width: 80%;
+  margin-left: 10%;
+  margin-top: 2.5%;
+  height: 75%;
+  border-top-left-radius: 25px;
+  border-top-right-radius: 25px;
+  border: 2px solid white;
+  box-shadow: 5px 8px 16px 1px rgba(0,0,0,0.5);
+}
+
+.pendingToolbar{
+  width: 100.1%;
+  height: 10%;
+  border-bottom: 2px solid white;
+  background: rgba(36,51,65, .7);
+  border-top-left-radius: 25px;
+  border-top-right-radius: 25px;
+}
+
+.pendingHolder{
+  width: 100.1%;
+  height: 89.5%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.pendingButtonRight{
+  width: 33.3%;
+  height: 100%;
+  display: inline-block;
+  background: transparent;
+  outline: none;
+  border: 0;
+}
+
+.pendingButtonLeft{
+  width: 80%;
+  height: 100%;
+  display: inline-block;
+  background: transparent;
+  outline: none;
+  border: 0;
+  display: flex;
+}
+
+.pendingButtonRight span{
+  font-size: 170%;
+  font-weight: 900;
+  float: left;
+  margin-left: 25%;
+  margin-top: -15%;
+}
+
+.pendingButtonRight:nth-last-of-type(1) span{
+  margin-left: 10%;
+}
+
+ .pendingButtonLeft span:first-of-type{
+   font-size: 170%;
+   font-weight: 900;
+   margin-left: 5%;
+   margin-right: 5%;
+   margin-top: -4%;
+ }
+
+ .pendingButtonLeft span:nth-of-type(2){
+   margin-top: 6%;
+ }
+
+.pendingButtonLeft:hover span{
+  color: white;
+}
+
+.pendingButtonRight span, .pendingButtonLeft span{
+  color: grey;
+}
+
+.pendingButtonRight:first-of-type:hover span{
+  color: #39FF14;
+}
+
+
+.pendingButtonRight:nth-of-type(2):hover span{
+  color: red;
+}
+
+.pendingButtonsRightHolder{
+  float: right;
+  width: 40%;
+  height: 100%;
+  display: flex;
+  margin-right: 2.5%;
+}
+
+.pendingButtonsLeftHolder{
+  float: left;
+  width: 40%;
+  height: 100%;
+  margin-left: 2.5%;
+}
+
+.pendingRequest{
+  width: 100%;
+  height: 30%;
+  transition: .2s;
+}
+
+.noPendingRequest{
+  width: 100%;
+  height: 50%;
+  display: none;
+}
+
+.noPendingRequest:first-child{
+  color: grey;
+  font-size: 140%;
+}
+
+.pendingRequest:hover{
+  cursor: pointer;
+}
+
+.pendingRequestAvatarArea{
+  width: 25%;
+  height: 100%;
+  float: left;
+}
+
+.pendingRequestAvatarHolder{
+  width: 80%;
+  height: 75%;
+  margin-left: 7.5%;
+  margin-top: 12.5%;
+  border: 2px solid white;
+  border-radius: 10px;
+}
+
+.pendingRequestAvatar{
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+}
+
+.pendingRequestInfoArea{
+  width: 75%;
+  height: 95%;
+  margin-top: 1.5%;
+  float: right;
+}
+
+.pendingRequestDataHolder{
+  width: 100%;
+  height: 33.3%;
+  position: relative;
+  overflow: hidden;
+}
+
+.pendingRequestDataLegend{
+  position: absolute;
+  font-size: 70%;
+  color: grey;
+  top: -20%;
+  left: .5%;
+  font-weight: 900;
+}
+
+.pendingRequestDataContent{
+  float: left;
+  margin-left: 2.5%;
+  color: white;
+  font-size: 115%;
+  font-weight: 900;
+}
+
+
+/* Feed Tab */
+
+
+.feedContentUpper{
+  width: 70%;
+  height: 8.5%;
+  margin-top: 10%;
+  margin-right: 5%;
+  float: right;
+  transition: .5s;
+}
+
+.feedContentLower{
+  width: 90%;
+  height: 70%;
+  margin-top: 5%;
+  margin-right: 5%;
+  float: right;
+  transition: .5s;
+  overflow-y: auto;
+}
+
+.feedContentUpper textarea{
+  resize: none;
+  display: inline-block;
+  height: 70%;
+  width: 89.4%;
+  overflow: hidden;
+  float: left;
+  outline: none;
+  border: 2px solid grey;
+  background: transparent;
+  color: white;
+  border-radius: 7px;
+  box-shadow: 5px 8px 16px 1px rgba(0,0,0,0.5);
+}
+
+.feedContentUpper textarea:not(:focus):hover{
+  background: rgba(128,128,128, .1);
+}
+
+.feedContentUpper textarea:focus{
+  height: 82.5%;
+  border: 2px solid white !important;
+}
+
+.feedContentUpper textarea::placeholder{
+  opacity: .7;
+  color: white;
+}
+
+.feedContentUpper textarea:focus::placeholder{
+  color: transparent;
+}
+
+.feedContentUpper textarea:valid{
+  border: 2px solid #39ff14;
+}
+
+.feedContentUpper textarea:not(:placeholder-shown):invalid{
+  border: 2px solid #fe0002;
+}
+
+.feedContentUpper:focus-within{
+  height: 20%;
+  width: 90%;
+}
+
+.feedContentUpper:focus-within + .feedContentLower{
+  height: 60%;
+}
+
+.noFeedContent{
+  width: 90%;
+  height: 70px;
+  margin-left: 5%;
+  margin-top: 22.5%;
+  float: left;
+  display: none;
+}
+
+.noFeedContent span{
+  color: grey;
+  margin-left: 10%;
+  margin-top: 1%;
+  font-size: 110%;
+  font-weight: 900;
+}
+
+.noFeedImageHolder{
+  width: 25%;
+  height: 90%;
+  margin-top: .75%;
+  margin-left: 2.5%;
+  background: url("../graphics/feedback.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 100%;
+  filter: invert(50%);
+}
+
+.feedPosted{
+  width: 90%;
+  min-height: 130px;
+  height: auto;
+  margin-left: 5%;
+  margin-top: 2.5%;
+  overflow-y: hidden;
+  background: rgba(128,128,128, .3);
+  border-radius: 10px;
+  border-top-right-radius: 0;
+  position: relative;
+}
+
+.feedPostedUpper{
+  width: 100%;
+  height: 30px;
+}
+
+.feedPostUpperLeft{
+  width: 70%;
+  height: 100%;
+  float: left;
+  overflow: hidden;
+}
+.feedPostUpperRight{
+  width: 27.5%;
+  height: 100%;
+  margin-right: 2.5%;
+  float: right;
+}
+
+.feedPostUpperLeft span:first-of-type{
+  margin-left: 5%;
+  font-weight: 900;
+  color: white;
+}
+
+.feedPostUpperLeft span:nth-of-type(2){
+  margin-left: 1.5%;
+  color: grey;
+}
+
+.feedPostUpperRight span{
+  color: grey;
+  font-weight: 900;
+  font-size: 80%;
+}
+
+.feedPostedLower{
+  width: 100%;
+  min-height: : 100px;
+  max-height: 200px;
+  line-height: 1.35;
+}
+
+.feedPostedAvatar{
+  margin-left: 2.5%;
+  margin-top: 2.5%;
+  margin-right: 2.5%;
+  width: 75px;
+  height: 75px;
+  border-radius: 10px;
+  float: left;
+}
+
+.feedPostedLower span{
+  color: white;
+  padding-left: 2.5%;
+  padding-right: 2.5%;
+  word-wrap: break-word;
+  display: block;
+}
