@@ -1,46 +1,62 @@
 <div class="companySectionContainer">
-  <div class="companySectionContent">
-    <div class="companySetionImageArea">
-      <img id="companySectionCompanyImage" src="../graphics/Company.svg">
-    </div>
-    <div class="companySectionFields" align="center">
-    <div class="companySectionTitleArea unselectable">
-      <span>You may register a company by filling out the following <b>form</b></span>
-    </div>
-    <div class="companySectionInputArea">
-      <div class="companySectionEntryFormArea">
-        <form style="height: 100%; position: relative;" spellcheck="false" id="companySectionForm">
-          <div class="companySectionInputHolder companySectionPrimaryInputHolder" id="titleCompanySectionHolder">
-          <input id="companySectionTitle" class="companySectionRegisterEntry companySectionEntries" type="text"
-            placeholder="Company Title" required minlength="3" maxlength="30" onKeyDown="this.setCustomValidity('')">
-          </div>
-          <div class="companySectionInputHolder companySectionPrimaryInputHolder" id="identifierCompanySectionHolder">
-          <input id="companySectionIdentifier" class="companySectionRegisterEntry companySectionEntries" type="text"
-            placeholder="Unique Identifier" required minlength="3" maxlength="10" pattern="([a-zA-Z0-9]+[\._-]{0,1})+[a-zA-Z0-9]+"
-            onKeyDown="this.setCustomValidity('')">
-          </div>
-          <div class="companySectionInputHolder companySectionPrimaryInputHolder" id="locationCompanySectionHolder">
-          <input id="companySectionLocation" class="companySectionRegisterEntry companySectionEntries" type="text"
-          placeholder="Operating Location" required minlength="3" maxlength="30" onKeyDown="this.setCustomValidity('')">
-          </div>
-          <div style="width: 100%; height: 12.5%">
-          <div class="companySectionRemoteContainer">
-            <button id="companySectionCheckBoxButton" type="button" class="checkBoxButton"
-              value=0 onclick="changeCheckBoxValue(this)"></button>
-            <span>Remote</span>
-          </div>
-          </div>
-          <div class="companySectionInputHolder" id="descriptionCompanySectionHolder">
-          <textarea spellcheck="false" id="companySectionDescription" class="companySectionTextArea companySectionEntries"
-          required minlength="100" placeholder="Brief Description" maxlength="350" onKeyDown="this.setCustomValidity('')"></textarea>
-          </div>
-        </form>
-      </div>
-      <div align="center" style="margin-top: 25.5%">
-        <button class="companySectionSubmitButton" type="button"
-          onClick="validateCompanySectionEntries(submitCompanySectionEntries)">Register</button>
+  <div class="companySectionContentHolder">
+    <div class="companySectionContent">
+      <div class="companySectionInnerContent">
+        <div class="companySectionSelectPageSpanHolder unselectable" align="center">
+          <span>You may access company procedures by selecting any of the following</span>
+        </div>
+        <div class="companySectionSelectPageButtonHolder unselectable" align="center">
+          <button class="companySectionSelectPageButton" onClick="scrollCompanyContent(0)">Company registration</button>
+          <button class="companySectionSelectPageButton" style="margin-left: 5%" onClick="scrollCompanyContent(1)">Company details</button>
+        </div>
       </div>
     </div>
+    <div class="companySectionContent" style="left: -100%;">
+
+    </div>
+    <div class="companySectionContent" style="left: 100%;">
+
+      <div class="companySectionFields" align="center">
+        <div class="companySectionTitleArea unselectable">
+          <span>You may register a company by filling out the following <b>form</b></span>
+        </div>
+        <div class="companySectionInputArea">
+          <div class="companySectionEntryFormArea">
+            <form style="height: 100%; position: relative;" spellcheck="false" id="companySectionForm">
+              <div class="companySectionInputHolder companySectionPrimaryInputHolder" id="titleCompanySectionHolder">
+                <input id="companySectionTitle" class="companySectionRegisterEntry companySectionEntries" type="text"
+                placeholder="Company Title" required minlength="3" maxlength="30" onKeyDown="this.setCustomValidity('')">
+              </div>
+              <div class="companySectionInputHolder companySectionPrimaryInputHolder" id="identifierCompanySectionHolder">
+                <input id="companySectionIdentifier" class="companySectionRegisterEntry companySectionEntries" type="text"
+                placeholder="Unique Identifier" required minlength="3" maxlength="10" pattern="([a-zA-Z0-9]+[\._-]{0,1})+[a-zA-Z0-9]+"
+                onKeyDown="this.setCustomValidity('')">
+              </div>
+              <div class="companySectionInputHolder companySectionPrimaryInputHolder" id="locationCompanySectionHolder">
+                <input id="companySectionLocation" class="companySectionRegisterEntry companySectionEntries" type="text"
+                placeholder="Operating Location" required minlength="3" maxlength="30" onKeyDown="this.setCustomValidity('')">
+              </div>
+              <div style="width: 100%; height: 12.5%">
+                <div class="companySectionRemoteContainer">
+                  <button id="companySectionCheckBoxButton" type="button" class="checkBoxButton"
+                  value=0 onclick="changeCheckBoxValue(this)"></button>
+                  <span>Remote</span>
+                </div>
+              </div>
+              <div class="companySectionInputHolder" id="descriptionCompanySectionHolder">
+                <textarea spellcheck="false" id="companySectionDescription" class="companySectionTextArea companySectionEntries"
+                required minlength="100" placeholder="Brief Description" maxlength="350" onKeyDown="this.setCustomValidity('')"></textarea>
+              </div>
+            </form>
+          </div>
+          <div align="center" style="margin-top: 25.5%">
+            <button class="companySectionSubmitButton" type="button"
+            onClick="scrollCompanyContent(2)" style="margin-right: 5%">Cancel</button>
+            <button class="companySectionSubmitButton" type="button"
+            onClick="validateCompanySectionEntries(submitCompanySectionEntries)">Register</button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

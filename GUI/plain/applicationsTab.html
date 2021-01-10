@@ -1,0 +1,22 @@
+<div class="applicationsContent unselectable">
+  <div class="contentWindowUpper" align="center">
+    <span>Pending applications</span>
+  </div>
+  <div class="contentWindowLower">
+    <div class="pendingToolbar">
+      <div class="pendingButtonsLeftHolder">
+        <button class="pendingButtonLeft" onClick="toggleAll()"><span>☐</span><span>Select all</span></button>
+      </div>
+      <div class="pendingButtonsRightHolder">
+        <button class="pendingButtonRight" onClick="handlePendingRequest(0)"><span>✓</span></button>
+        <button class="pendingButtonRight" onClick="handlePendingRequest(1)"><span>✗</span></button>
+        <button class="pendingButtonRight" onClick="handlePendingRequest(2)"><span>⛔</span></button>
+      </div>
+    </div>
+    <div class="pendingHolder">
+      <div class="noPendingRequest" align="center">
+        <span>There are no more <span style="color: #4ad295">pending</span> applications for the time being</span>
+      </div>
+    </div>
+  </div>
+</div>

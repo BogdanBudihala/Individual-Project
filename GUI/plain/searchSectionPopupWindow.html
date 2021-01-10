@@ -52,9 +52,9 @@
     </div>
   </div>
   <div class="lowerSearchSectionPopupWindowArea" align="center">
-    <div style="width: 50%">
+    <div class="unselectable" style="width: 50%">
       <button class="popupWindowSubmitButton" style="margin-right: 5%" onClick="hidePopup(1)">Cancel</button>
-      <button class="popupWindowSubmitButton" onClick="alert('Not implemented')">Apply</button>
+      <button class="popupWindowSubmitButton" onClick="forwardApplication(this.parentElement.parentElement.parentElement)">Apply</button>
     </div>
   </div>
 </div>

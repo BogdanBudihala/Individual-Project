@@ -18,7 +18,7 @@
         <div class="settingsOptionSpanHolder">
           <span>Remember last identifier</span>
         </div>
-        <div class="settingsOptionTogglerContainer">
+        <div class="settingsOptionTogglerContainer settingsOptionTogglerContainerAccount">
           <div class="settingsOptionSlider"></div>
           <button type="button" onClick="toggleSettingsOption(this.parentElement, true)">On</button>
           <button type="button" onClick="toggleSettingsOption(this.parentElement, false)">Off</button>
@@ -31,7 +31,7 @@
         <div class="settingsOptionSpanHolder">
           <span>Toggle email notifications</span>
         </div>
-        <div class="settingsOptionTogglerContainer">
+        <div class="settingsOptionTogglerContainer settingsOptionTogglerContainerAccount">
           <div class="settingsOptionSlider"></div>
           <button type="button" onClick="toggleSettingsOption(this.parentElement, true)">On</button>
           <button type="button" onClick="toggleSettingsOption(this.parentElement, false)">Off</button>
@@ -44,7 +44,7 @@
         <div class="settingsOptionSpanHolder">
           <span>Toggle statistics partaking</span>
         </div>
-        <div class="settingsOptionTogglerContainer">
+        <div class="settingsOptionTogglerContainer settingsOptionTogglerContainerAccount">
           <div class="settingsOptionSlider"></div>
           <button type="button" onClick="toggleSettingsOption(this.parentElement, true)">On</button>
           <button type="button" onClick="toggleSettingsOption(this.parentElement, false)">Off</button>
@@ -58,24 +58,35 @@
     <!-- Company settings start here -->
 
     <div class="settingsSectionLowerArea unselectable" style="left: 100%">
+      <div class="settingsCompanyDropdownContainer">
+        <div>
+          <span class="settingsCompanyDropdownSpan">Company:</span>
+        </div>
+        <div class="settingsCompanyDropdown" onMouseOver="this.firstElementChild.style.display='block'"
+          onMouseOut="this.firstElementChild.style.display='none'">
+          <div class="settingsRegisteredCompaniesContainer">
+          </div>
+        </div>
+      </div>
+      <div class="settingsCompanyTab">
       <div class="settingsOptionContainer">
         <div class="settingsOptionSpanHolder">
           <span>Toggle company avatar</span>
         </div>
-        <div class="settingsOptionTogglerContainer">
+        <div class="settingsOptionTogglerContainer settingsOptionTogglerContainerCompany">
           <div class="settingsOptionSlider"></div>
           <button type="button" onClick="toggleSettingsOption(this.parentElement, true)">On</button>
           <button type="button" onClick="toggleSettingsOption(this.parentElement, false)">Off</button>
         </div>
         <div class="settingsOptionTooltip">
-          <p>Allow users that have not enrolled in this company to view its avatar.</p>
+          <p>Allow users that are not enrolled in this company to view its avatar.</p>
         </div>
       </div>
       <div class="settingsOptionContainer">
         <div class="settingsOptionSpanHolder">
           <span>Toggle match visibility</span>
         </div>
-        <div class="settingsOptionTogglerContainer">
+        <div class="settingsOptionTogglerContainer settingsOptionTogglerContainerCompany">
           <div class="settingsOptionSlider"></div>
           <button type="button" onClick="toggleSettingsOption(this.parentElement, true)">On</button>
           <button type="button" onClick="toggleSettingsOption(this.parentElement, false)">Off</button>
@@ -88,7 +99,7 @@
         <div class="settingsOptionSpanHolder">
           <span>Toggle applications</span>
         </div>
-        <div class="settingsOptionTogglerContainer">
+        <div class="settingsOptionTogglerContainer settingsOptionTogglerContainerCompany">
           <div class="settingsOptionSlider"></div>
           <button type="button" onClick="toggleSettingsOption(this.parentElement, true)">On</button>
           <button type="button" onClick="toggleSettingsOption(this.parentElement, false)">Off</button>
@@ -96,6 +107,7 @@
         <div class="settingsOptionTooltip">
           <p>Allow users to apply to this company.</p>
         </div>
+      </div>
       </div>
     </div>
   </div>
