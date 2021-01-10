@@ -4,7 +4,7 @@ window.onload = bindEvents();
 function bindEvents(){
   loadControlsBar(true);
   let currentUser = validateCurrentUser();
-  beginWindowLoadingByType(0, null);
+  beginWindowLoadingByType(0, loadLastConnectedCompany);
   sendAvatarFetchRequest(0);
 }
 
@@ -37,7 +37,7 @@ function parseAvatarLoadingResponse(response, avatarType){
 function beginWindowLoadingByType(winType, propagatedCallback){
   activateTransition(winType*20+"%");
   urls = ['http://127.0.0.1:5000/worker_details', 'http://127.0.0.1:5000/worker_details',
-   'http://127.0.0.1:5000/worker_details', 'http://127.0.0.1:5000/account_details', 'http://127.0.0.1:5000/account_details']
+   'http://127.0.0.1:5000/worker_details', 'http://127.0.0.1:5000/account_details', 'http://127.0.0.1:5000/account_settings']
   callbackFuncs = [(response) => {loadHomeWindow(response, propagatedCallback)}, loadCompanyWindow, loadSearchWindow,
     loadAccountWindow, loadSettingsWindow];
   document.getElementById("toggleMovementDiv").value = winType * 20 + "%";
@@ -120,6 +120,7 @@ function parseHomeSectionResponse(response){
         dotsCount+=1;
       }, 333);
       document.body.style.cursor = "progress";
+      saveCompanyIdentifier(document.getElementById("homeSectionCompanyIdentifier").value);
       setInterval(() => {
         redirectPage("../templates/employeeLogged.html");
       }, 1000);
@@ -129,11 +130,43 @@ function parseHomeSectionResponse(response){
     }
 }
 
+function saveCompanyIdentifier(identifier){
+  const { ipcRenderer } = require('electron')
+  ipcRenderer.send('saveIdentifier', identifier);
+}
+
+function loadLastConnectedCompany(){
+  let url = 'http://127.0.0.1:5000/last_connected';
+  let parameters = {username: validateCurrentUser()};
+  let callback = (response) => {parseLoadLastConnectedResponse(response)};
+  postData(url, parameters, callback);
+}
+
+function parseLoadLastConnectedResponse(response){
+  if(response.success && response.parameters.identifier != null){
+    document.getElementById("homeSectionCompanyIdentifier").value = response.parameters.identifier;
+  }
+  else if(!response.success){
+    displayAlert("An error occurred: <br>"+response.message);
+  }
+}
+
 // COMPANY SECTION sourcecode
 
 
 function loadCompanyWindow(workerDetails){
-  loadHTMLChunk("../plain/companySection.html", document.getElementById("homeScreen"), () => {});
+  loadHTMLChunk("../plain/companySection.html", document.getElementById("homeScreen"), () => {
+    scrollCompanyContent(2);
+  });
+}
+
+function scrollCompanyContent(windowType){
+  let windowContents = Array.from(document.getElementsByClassName("companySectionContent"));
+  let newPositions = windowType == 0 ? ["-100%", "100%", "0%"] : windowType == 1 ? ["-100%", "0%", "100%"] : ["0%", "-100%", "100%"];
+  document.documentElement.style.setProperty('--companyBeforeWidth', windowType == 2? "100%" : "0%");
+  windowContents.forEach((item, i) => {
+    item.style.left = newPositions[i];
+  });
 }
 
 function changeCheckBoxValue(checkBoxButton){
@@ -488,7 +521,7 @@ function fetchCompanyDetails(compId){
 
 function sendDetailsLoadRequest(compId, requestType){
   url = requestType == 0? 'http://127.0.0.1:5000/load_company' : 'http://127.0.0.1:5000/load_CEO';
-  parameters = {identifier: compId};
+  parameters = requestType == 0 ? {identifier: compId, username: validateCurrentUser()} : {identifier: compId};
   callback = (response) => {parseDetailsFetchResponse(compId, response, requestType)};
   postData(url, parameters, callback);
 }
@@ -507,13 +540,16 @@ function parseDetailsFetchResponse(compId, response, requestType){
 function loadCompanyDetails(compId, listOfAttributes){
   let spanLabels = document.getElementsByClassName("searchSectionCompanySpanLabel");
   spanLabels[0].insertAdjacentHTML("afterbegin", compId);
-  for(let i=0;i<listOfAttributes.length-1;i++){
+  for(let i=0;i<listOfAttributes.length-2;i++){
     spanLabels[i+1].insertAdjacentHTML("afterbegin",listOfAttributes[i]);
   }
-  document.getElementById("popupCompanyAvatarImage").src = listOfAttributes[listOfAttributes.length-1] === null ? "../graphics/company.png":
-    'data:image/png;base64,' + listOfAttributes[listOfAttributes.length-1];
-  if(listOfAttributes[listOfAttributes.length-1] === null){
+  document.getElementById("popupCompanyAvatarImage").src = listOfAttributes[listOfAttributes.length-2] === null ? "../graphics/company.png":
+    'data:image/png;base64,' + listOfAttributes[listOfAttributes.length-2];
+  if(listOfAttributes[listOfAttributes.length-2] === null){
     document.getElementById("popupCompanyAvatarImage").style.filter = "invert(100%)";
+  }
+  if(listOfAttributes[listOfAttributes.length-1] === 0){
+    document.getElementsByClassName("popupWindowSubmitButton")[1].classList.add('lockedElement');
   }
 }
 
@@ -580,13 +616,96 @@ function updateRowCounter(actionType){
   document.getElementById("searchSectionArrowButtonRight").disabled = nextValueIndex == rowValues.length-1;
 }
 
+function forwardApplication(object){
+  let identifier = object.querySelector('.popupUpperSpanHolder .searchSectionCompanySpanLabel').innerHTML;
+  let url = 'http://127.0.0.1:5000/application';
+  let parameters = {identifier: identifier, username: validateCurrentUser()};
+  let callback = parseApplicationResponse;
+  postData(url, parameters, callback);
+}
+
+function parseApplicationResponse(response){
+  displayAlert(response.message);
+  hidePopup(1);
+}
+
 
 
 // SETTINGS SECTION sourcecode
 
 
-function loadSettingsWindow(workerDetails){
-  loadHTMLChunk("../plain/settingsSection.html", document.getElementById("homeScreen"), () => {});
+function loadSettingsWindow(accountSettings){
+  loadHTMLChunk("../plain/settingsSection.html", document.getElementById("homeScreen"), () => {
+    let accountSettingsObjectsArray = document.getElementsByClassName("settingsOptionTogglerContainerAccount");
+    accountSettings.accountSettings.forEach((setting, i) => {
+      toggleSettingsOption(accountSettingsObjectsArray[setting-1], false, false);
+    });
+    if(accountSettings.companies.length == 0){
+      document.getElementsByClassName("settingsCompanyDropdown")[0].insertAdjacentHTML('beforeend',
+        '<span class="settingsNoCompanySpan">No registered company</span>');
+      document.getElementsByClassName("settingsCompanyTab")[0].classList.add("lockedElement");
+    }else{
+      loadRegisteredCompaniesIntoContainer(accountSettings.companies);
+    }
+
+  });
+}
+
+function loadRegisteredCompaniesIntoContainer(companies){
+  companies.forEach((company, i) => {
+    let companiesContainer = document.getElementsByClassName("settingsRegisteredCompaniesContainer")[0];
+    companiesContainer.insertAdjacentHTML('beforeend',"<div></div>");
+    let lastAdded = companiesContainer.lastElementChild;
+    loadHTMLChunk("../plain/settingsSectionRegisteredCompany.html", lastAdded, ()=>{
+      lastAdded.querySelector(".settingsRegisteredCompanyAvatarImage").src = company[1] === null? "../graphics/company.png":
+        'data:image/png;base64,' + company[1];
+      if(company[1] === null){
+        lastAdded.querySelector(".settingsRegisteredCompanyAvatarImage").style.filter="invert(100%)";
+      }
+      lastAdded.querySelector(".settingsRegisteredCompanyIdentifierSpan").innerHTML = company[0];
+      if(i==0){
+        appendChildDropdown(lastAdded.firstElementChild);
+      }
+      lastAdded.addEventListener('click',  ()=>{appendChildDropdown(lastAdded.firstElementChild);
+        companiesContainer.style.display="none";
+        document.getElementsByClassName("settingsCompanyTab")[0].style.transform = "translatex(100%)";
+        setTimeout(() => {document.getElementsByClassName("settingsCompanyTab")[0].style.transform = "translatex(0)";}, 200)
+        requestCompanySettings(document.getElementsByClassName("settingsCompanyDropdown")[0].value);
+      });
+    })
+  });
+}
+
+function appendChildDropdown(childToAdd){
+  let clone = childToAdd.cloneNode(true);
+  let dropdownDiv = document.getElementsByClassName("settingsCompanyDropdown")[0];
+  if(dropdownDiv.children.length > 1){
+    dropdownDiv.removeChild(dropdownDiv.lastElementChild);
+  }
+
+  clone.style.borderTopLeftRadius = "5px";
+  dropdownDiv.appendChild(clone);
+  dropdownDiv.value = clone.querySelector(".settingsRegisteredCompanyIdentifierSpan")
+    .innerHTML;
+
+  requestCompanySettings(dropdownDiv.value);
+}
+
+function requestCompanySettings(companyId){
+  url = 'http://127.0.0.1:5000/company_settings';
+  parameters = {identifier: companyId};
+  callback = (response) => {parseCompanySettingsFetchResponse(response)};
+  postData(url, parameters, callback);
+}
+
+function parseCompanySettingsFetchResponse(response){
+  let settingsObjectsArray = document.getElementsByClassName("settingsOptionTogglerContainer");
+  for(let i=3;i<6;i++){
+    toggleSettingsOption(settingsObjectsArray[i], true, false);
+  }
+  response.parameters.companySettings.forEach((setting, i) => {
+    toggleSettingsOption(settingsObjectsArray[setting-1], false, false);
+  });
 }
 
 function activateTabSliderTransition(targetPosInPercentage){
@@ -603,8 +722,25 @@ function changeSettingsWindow(winType){
   document.getElementsByClassName("settingsSectionLowerArea")[1].style.left = winType == 0? "100%" : "0%";
 }
 
-function toggleSettingsOption(parent, boolean){
+function toggleSettingsOption(parent, boolean, updateBool = true){
   parent.value = boolean;
   parent.firstElementChild.style.left = boolean? "0%" : "50%";
   parent.firstElementChild.style.background = boolean? "green" : "red";
+  if(updateBool){
+    let containerArray = Array.from(document.getElementsByClassName("settingsOptionTogglerContainer"));
+    sendSettingsUpdateRequest(containerArray.indexOf(parent)+1, parent.value);
+  }
+}
+
+function sendSettingsUpdateRequest(settingId, operationBool){
+  let url = 'http://127.0.0.1:5000/change_settings';
+  let pairedKey = settingId < 4? validateCurrentUser() : document.getElementsByClassName("settingsCompanyDropdown")[0].value;
+  let parameters = {pairedKey: pairedKey, settingId: settingId, operation: operationBool};
+  postData(url, parameters, parseSettingsUpdateResponse);
+}
+
+function parseSettingsUpdateResponse(response){
+  if(!response.success){
+    displayAlert(response.message);
+  }
 }

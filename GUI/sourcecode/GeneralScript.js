@@ -39,13 +39,31 @@ function validateCurrentUser(){
     if(currentUser === null || currentUser.username === null || currentUser.password === null){
       throw "Unauthorised access to the webpage";
     }
-    postData('http://127.0.0.1:5000/login_form', {username: currentUser.username}, (response) => {parseVerificationResponse(response, currentUser)});
+    postData('http://127.0.0.1:5000/login_form', {username: currentUser.username},
+      (response) => {parseVerificationResponse(response, currentUser)});
   }
   catch(errorCode){
     document.body.innerHTML="<h1>Error 401: Unauthorised access to webpage</h1>";
     //redirectPage("../templates/unauthorised.html")
   }
   return currentUser.username;
+}
+
+function validateCurrentComp(){
+  var currentComp = null;
+  try{
+    const { ipcRenderer } = require('electron')
+    currentComp = ipcRenderer.sendSync('getCurrentComp');
+    if(currentComp === null){
+      throw "Unauthorised access to the webpage";
+    }
+    postData('http://127.0.0.1:5000/login_employee', {username: validateCurrentUser(), identifier: currentComp},
+      (response) => {parseCompanyVerificationResponse(response)});
+  }
+  catch(errorCode){
+    document.body.innerHTML="<h1>Error 401: Unauthorised access to webpage</h1>";
+  }
+  return currentComp;
 }
 
 function parseVerificationResponse(response, currentUser){
@@ -55,9 +73,16 @@ function parseVerificationResponse(response, currentUser){
   }
 }
 
+function parseCompanyVerificationResponse(response){
+  if(!response.success){
+    document.body.innerHTML="<h1>Error 401: Unauthorised access to webpage</h1>";
+  }
+}
+
 function displayAlert(message){
   document.getElementById("alertContainer").style.display = 'block';
   document.getElementById("errorMsg").innerHTML = message;
+  setTimeout(()=>{document.getElementById("alertContainer").style.display = 'none'}, 3500);
 }
 
 function getCharacterWeight(char){
