@@ -60,6 +60,14 @@ class DBManager(object):
         )
         if self.__curs.fetchone() is None:
             raise Exception("1,Username and company ID combination is not present in Database.")
+
+        self.__curs.execute(
+            '''insert into connecthistory(paired_account, paired_company, connect_time) values (%s, %s, now())
+            ON CONFLICT ON CONSTRAINT connecthistory_paired_account_paired_company_PK
+            DO update set connect_time = now()''', (pairedAcc, pairedComp)
+        )
+
+        self.__conn.commit()
         return pairedComp
 
     def fetchPassword(self, username):
@@ -132,18 +140,23 @@ class DBManager(object):
     def getCompaniesMatchingKeyPhrase(self, username, keyPhrase, limit):
         sqlQuery = \
             '''
-                    select C.id, C.title, (select avatar from companyavatar where C.id = paired_company) avatar
-                    from company C where C.id not in (select id from company where paired_account=%(username)s)
+                    select C.id, C.title,
+                    (select avatar from companyavatar where paired_company = C.id and 
+                        (4 not in (select setting_id from companysettings where paired_company = C.id)
+                         or %(username)s in (select paired_account from employee where paired_company = C.id)))
+                    from company C where 5 not in (select setting_id from companysettings where paired_company=C.id)
                     order by random() desc limit %(limit)s
         ''' \
                 if not keyPhrase else \
                 '''
                     select Query.paired_company,
                     (select title from company where Query.paired_company = id) title,
-                    (select avatar from companyavatar where Query.paired_company = paired_company) avatar
+                    (select avatar from companyavatar where paired_company = Query.paired_company and 
+                        (4 not in (select setting_id from companysettings where paired_company = Query.paired_company)
+                         or %(username)s in (select paired_account from employee where paired_company = Query.paired_company)))
                     from 
-                    (select paired_company from searchquery where search_terms @@ to_tsquery('simple', %(keyphrase)s)
-                    and paired_company not in (select id from company where paired_account=%(username)s)
+                    (select paired_company from searchquery SQ where search_terms @@ to_tsquery('simple', %(keyphrase)s)
+                    and 5 not in (select setting_id from companysettings where paired_company=SQ.paired_company)
                     order by ts_rank(search_terms, to_tsquery('simple', %(keyphrase)s)) desc limit %(limit)s) Query
         '''
         parameters = {'username': username, 'limit': limit} if not keyPhrase else \
@@ -151,11 +164,15 @@ class DBManager(object):
         self.__curs.execute(sqlQuery, parameters)
         return self.__curs.fetchmany(limit)
 
-    def fetchCompanyDetails(self, compID):
+    def fetchCompanyDetails(self, compID, username):
         self.__curs.execute(
             '''select location, title, description,
-               (select avatar from companyavatar where paired_company=%(compID)s) avatar
-                from company where id=%(compID)s''', {'compID': compID}
+               (select avatar from companyavatar where paired_company = %(compID)s and 
+                        (4 not in (select setting_id from companysettings where paired_company = %(compID)s)
+                         or %(username)s in (select paired_account from employee where paired_company = %(compID)s))),
+                (select case when 6 not in (select setting_id from companysettings where paired_company = %(compID)s)
+                 then 1 else 0 end)
+                from company where id=%(compID)s''', {'compID': compID, 'username': username}
         )
         retVal = self.__curs.fetchone()
         if retVal is None:
@@ -175,6 +192,86 @@ class DBManager(object):
         if retVal is None:
             raise Exception("0,No CEO associated to this company ID.")
         return retVal
+
+    def getRegisteredCompanies(self, username):
+        self.__curs.execute('''select C.id, (select avatar from companyavatar where paired_company = C.id)
+                                from company C where paired_account=%s''', (username,))
+        return self.__curs.fetchall()
+
+    def getAccountSettings(self, username):
+        self.__curs.execute('''select setting_id from accountsettings where paired_account = %s''', (username,))
+        return self.__curs.fetchall()
+
+    def getCompanySettings(self, compID):
+        self.__curs.execute('''select setting_id from companysettings where paired_company = %s''', (compID,))
+        return self.__curs.fetchall()
+
+    def removeSetting(self, key, settingId):
+        tableName = "accountsettings" if settingId in range(1, 4) else "companysettings"
+        columnName = "paired_account" if settingId in range(1, 4) else "paired_company"
+        query = f'''delete from {tableName} where {columnName}=%s and setting_id=%s'''
+        self.__curs.execute(query, (key, settingId))
+        self.__conn.commit()
+
+    def addSetting(self, key, settingId):
+        tableValues = "accountsettings(paired_account, setting_id)" if settingId in range(1, 4) else \
+            "companysettings(paired_company, setting_id)"
+        query = f'''insert into {tableValues} values(%s, %s)'''
+        self.__curs.execute(query, (key, settingId))
+        self.__conn.commit()
+
+    def fetchLastConnected(self, username):
+        self.__curs.execute('''select paired_company from connecthistory where paired_account = %(user)s and 1 not in 
+                    (select setting_id from accountsettings where paired_account = %(user)s)
+                    order by connect_time desc limit 1;''', {'user': username})
+        result = self.__curs.fetchone()
+        return result[0] if result is not None else None
+
+    def insertApplication(self, identifier, username):
+        self.__curs.execute('''select * from employee where paired_account = %s and paired_company = %s''',
+                            (username, identifier))
+        if self.__curs.fetchone() is not None:
+            raise Exception("0,User is an active employee of the company")
+
+        self.__curs.execute('''select * from blockedapplication where paired_account = %s and paired_company = %s'''
+                            , (username, identifier))
+        if self.__curs.fetchone() is not None:
+            raise Exception("1,User is prohibited from applying to this company")
+
+        self.__curs.execute('''insert into application(paired_account, paired_company) values (%s, %s)
+        ''', (username, identifier))
+        self.__conn.commit()
+
+    def handleApplication(self, identifier, username, operationType):
+        mainQuery = 'delete from application where paired_account = %s and paired_company = %s'
+        sideQuery = 'insert into employee(paired_account, paired_company) values (%s, %s)' if operationType == 0 else \
+            'insert into blockedapplication(paired_account, paired_company) values (%s, %s)' if operationType == 2 \
+                else None
+
+        self.__curs.execute(mainQuery, (username, identifier))
+        if sideQuery is not None:
+            self.__curs.execute(sideQuery, (username, identifier))
+        self.__conn.commit()
+
+    def fetchApplication(self, identifier):
+        self.__curs.execute('''select Ap.paired_account, (select email from emailaddress where paired_account = 
+            Ap.paired_account), (select first_name || ' ' || last_name as name from worker where paired_account = 
+            Ap.paired_account), (select avatar from workeravatar where paired_account = Ap.paired_account)
+            from (select paired_account from application where paired_company = %s) Ap
+        ''', (identifier,))
+
+        return self.__curs.fetchall()
+
+    def postFeed(self, identifier, username, text):
+        self.__curs.execute('''insert into feedhistory(paired_account, paired_company, text_message, post_time) 
+        values (%s, %s, %s, now())''', (username, identifier, text))
+        self.__conn.commit()
+
+    def fetchFeed(self, identifier):
+        self.__curs.execute('''select FH.paired_account, to_char(FH.post_time, 'dd/mm/yyyy hh24:mi') post_time, 
+            FH.text_message, (select avatar from workeravatar where paired_account = FH.paired_account)
+            from feedhistory FH where FH.paired_company = %s order by FH.post_time desc''', (identifier,))
+        return self.__curs.fetchall()
 
 
 '''

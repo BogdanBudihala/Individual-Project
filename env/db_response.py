@@ -198,12 +198,12 @@ def attemptLoadSearchResults(username, keyPhrase, limit):
         del __linker
 
 
-def attemptLoadCompany(compID):
+def attemptLoadCompany(compID, username):
     try:
         __linker = DBManager(user='appuser', password='proiectindiv')
-        fetchedCompany = __linker.fetchCompanyDetails(compID)
+        fetchedCompany = __linker.fetchCompanyDetails(compID, username)
         fetchedCompany = (fetchedCompany[0], fetchedCompany[1], fetchedCompany[2], _encode64DecodeUTF8Image(
-            fetchedCompany[3]))
+            fetchedCompany[3]), fetchedCompany[4])
         return {'success': True, 'message': "Company loaded successfully.", 'parameters':
             {'companyDetails': fetchedCompany}}
     except Exception as db_except:
@@ -226,6 +226,120 @@ def attemptLoadCEO(compID):
         if '0,' in str(db_except):
             return {'success': False, 'message': "Unable to obtain CEO information: No CEO associated to this company.",
                     'parameters': None}
+        return {'success': False, 'message': str(db_except), 'parameters': None}
+    finally:
+        del __linker
+
+def attemptLoadSettings(username):
+    try:
+        __linker = DBManager(user='appuser', password='proiectindiv')
+        fetchedCompanies = __linker.getRegisteredCompanies(username)
+        fetchedSettings = __linker.getAccountSettings(username)
+        fetchedCompanies = [(tup[0], _encode64DecodeUTF8Image(tup[1])) for tup in fetchedCompanies]
+        return {'success': True, 'message': None, 'parameters':
+            {'companies': fetchedCompanies, 'accountSettings': fetchedSettings}}
+    except Exception as db_except:
+        return {'success': False, 'message': str(db_except), 'parameters': None}
+    finally:
+        del __linker
+
+def attemptLoadCompanySettings(compId):
+    try:
+        __linker = DBManager(user='appuser', password='proiectindiv')
+        fetchedSettings = __linker.getCompanySettings(compId)
+        return {'success': True, 'message': None, 'parameters': {'companySettings': fetchedSettings}}
+    except Exception as db_except:
+        return {'success': False, 'message': str(db_except), 'parameters': None}
+    finally:
+        del __linker
+
+def attemptChangeSettings(pairedKey, settingId, isToggledOn):
+    try:
+        __linker = DBManager(user='appuser', password='proiectindiv')
+        if isToggledOn:
+            __linker.removeSetting(pairedKey, settingId)
+        else:
+            __linker.addSetting(pairedKey, settingId)
+        return {'success': True, 'message': None, 'parameters': None}
+    except Exception as db_except:
+        return {'success': False, 'message': str(db_except), 'parameters': None}
+    finally:
+        del __linker
+
+def attemptLoadLastConnected(username):
+    try:
+        __linker = DBManager(user='appuser', password='proiectindiv')
+        fetchedCompany = __linker.fetchLastConnected(username)
+        return {'success': True, 'message': None, 'parameters': {'identifier': fetchedCompany}}
+    except Exception as db_except:
+        return {'success': False, 'message': str(db_except), 'parameters': None}
+    finally:
+        del __linker
+
+def attemptForwardApplication(identifier, username):
+    try:
+        __linker = DBManager(user='appuser', password='proiectindiv')
+        __linker.insertApplication(identifier, username)
+        return {'success': True, 'message': f"Successfully applied to {identifier}",
+                'parameters': None}
+    except Exception as db_except:
+        if 'constraint "application_paired_account_paired_company_pk"' in str(db_except):
+            return {'success': False,
+                    'message': f"Could not to apply to {identifier}: Previous application is still pending.",
+                    'parameters': None}
+        elif '0,' in str(db_except):
+            return {'success': False,
+                    'message': f"Could not to apply to {identifier}: You already are an active employee of the company.",
+                    'parameters': None}
+        elif '1,' in str(db_except):
+            return {'success': False,
+                    'message': f"Could not to apply to {identifier}: You are banned from applying to this company.",
+                    'parameters': None}
+        return {'success': False, 'message': str(db_except), 'parameters': None}
+    finally:
+        del __linker
+
+def attemptHandleApplication(identifier, username, operationType):
+    try:
+        if int(operationType) not in (0, 1, 2):
+            return {'success': False, 'message': "Invalid operation type parameter", 'parameters': None}
+        __linker = DBManager(user='appuser', password='proiectindiv')
+        __linker.handleApplication(identifier, username, operationType)
+        return {'success': True, 'message': f"Successfully handled {username}",
+                'parameters': None}
+    except Exception as db_except:
+        return {'success': False, 'message': str(db_except), 'parameters': None}
+    finally:
+        del __linker
+
+def attemptFetchApplication(identifier):
+    try:
+        __linker = DBManager(user='appuser', password='proiectindiv')
+        fetchedApplicants = __linker.fetchApplication(identifier)
+        applicants = [(tup[0], tup[1], tup[2], _encode64DecodeUTF8Image(tup[3])) for tup in fetchedApplicants]
+        return {'success': True, 'message': None, 'parameters': {'applicants': applicants}}
+    except Exception as db_except:
+        return {'success': False, 'message': str(db_except), 'parameters': None}
+    finally:
+        del __linker
+
+def attemptPostFeed(identifier, username, text):
+    try:
+        __linker = DBManager(user='appuser', password='proiectindiv')
+        __linker.postFeed(identifier, username, text)
+        return {'success': True, 'message': None, 'parameters': None}
+    except Exception as db_except:
+        return {'success': False, 'message': str(db_except), 'parameters': None}
+    finally:
+        del __linker
+
+def attemptFetchFeed(identifier):
+    try:
+        __linker = DBManager(user='appuser', password='proiectindiv')
+        fetchedFeed = __linker.fetchFeed(identifier)
+        feed = [(tup[0], tup[1], tup[2], _encode64DecodeUTF8Image(tup[3])) for tup in fetchedFeed]
+        return {'success': True, 'message': None, 'parameters': {'feed': feed}}
+    except Exception as db_except:
         return {'success': False, 'message': str(db_except), 'parameters': None}
     finally:
         del __linker
