@@ -3,6 +3,7 @@ const path = require('path')
 mainWindow = null;
 quitBool = true;
 authInfo = {username: null, password: null};
+compIdentifier = null;
 
 function loadWindowByType (wintype, path) {
   mainWindow = wintype == 0? createWindow(750, 550) : createWindow(1000, 650);
@@ -56,11 +57,20 @@ ipcMain.on('allowAuthentication', function (event, authenticatedAs, url) {
 ipcMain.on('allowUnauthentication', function (event){
   authInfo.username = null;
   authInfo.password = null;
+  compIdentifier = null;
   quitBool = false;
   mainWindow.close();
   loadWindowByType(0, '../GUI/templates/index.html');
 })
 
+ipcMain.on('saveIdentifier', function (event, identifier){
+  compIdentifier = identifier;
+})
+
 ipcMain.on('getCurrentUser', function (event) {
   event.returnValue = authInfo;
+})
+
+ipcMain.on('getCurrentComp', function (event) {
+  event.returnValue = compIdentifier;
 })
