@@ -20,7 +20,7 @@ function createWindow(width, height){
     width: width,
     height: height,
     resizable: false,
-    frame: true,
+    frame: false,
     icon: '../GUI/graphics/Hardhat.ico',
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
