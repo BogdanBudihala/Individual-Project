@@ -9,11 +9,27 @@ function bindEvents(){
 
 function loadSideBarButtons(){
   // CHECK EMPLOYEE LEVEL
+  url = 'http://127.0.0.1:5000/fetch_level';
+  parameters = {identifier: validateCurrentComp(), username: validateCurrentUser()};
+  callback = parseLevelFetchResponse;
+  postData(url, parameters, callback);
+}
+
+function parseLevelFetchResponse(response){
+  if(response.success){
+    placeSideBarButtons(response.parameters.level);
+  }
+  else{
+    alert(response.message);
+  }
+}
+
+function placeSideBarButtons(level){
   let buttonLabels = ["Daily feed", "Clock in", "Staff", "Statistics", "Schedule", "Messaging", "Applications", "Broadcast",
   "Set schedule", "Update data", "Manage activity", "Manage structure"];
   let icons = ['feedIcon.png', 'clockIcon.png', 'coworkerIcon.png', 'statisticsIcon.png', 'scheduleIcon.png', 'messageIcon.png',
   'resumeIcon.png', 'broadcastIcon.png', 'schedule2Icon.png', 'dataIcon.png', 'activityIcon.png', 'structureIcon.png']
-  let visibleButtons = 12;
+  let visibleButtons = level == 0 ? 6 : 12;
   let sidebar = document.getElementsByClassName("sideBarMiddle")[0];
 
   for(var i=0;i<visibleButtons;i++){
@@ -67,16 +83,16 @@ function parseCompanyInfoResponse(response, callback){
 function toggleSlider(currentButton, isClick){
   let slider = document.getElementById("sideBarSlider");
   let buttons = Array.from(document.getElementsByClassName("sideBarButton"));
-  slider.style.top = buttons.indexOf(currentButton)*32+"px";
+  slider.style.top = (buttons.indexOf(currentButton) == -1 ? 0 : buttons.indexOf(currentButton))*32+"px";
   slider.style.opacity = "1";
   if(isClick === true){
-    slider.value = buttons.indexOf(currentButton);
+    slider.value = buttons.indexOf(currentButton) == -1 ? 0 : buttons.indexOf(currentButton);
   }
 }
 
 function resetSlider(){
   let slider = document.getElementById("sideBarSlider");
-  slider.style.top = slider.value * 32 + "px";
+  slider.style.top = slider.value*32 + "px";
   slider.style.opacity = ".7";
 }
 
