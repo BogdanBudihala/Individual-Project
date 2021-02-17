@@ -344,6 +344,18 @@ def attemptFetchFeed(identifier):
     finally:
         del __linker
 
+def attemptFetchLevel(identifier, username):
+    try:
+        __linker = DBManager(user='appuser', password='proiectindiv')
+        fetchedLevel = __linker.fetchPrivilegeLevel(identifier, username)
+        return {'success': True, 'message': None, 'parameters': {'level': fetchedLevel}}
+    except Exception as db_except:
+        if '0,' in str(db_except):
+            return {'success': False, 'message': "User is not an active employee of the company", 'parameters': None}
+        return {'success': False, 'message': str(db_except), 'parameters': None}
+    finally:
+        del __linker
+
 def _encode64DecodeUTF8Image(binaryData):
     return b64encode(binaryData).decode('utf-8') if binaryData is not None else None
 

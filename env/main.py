@@ -146,6 +146,11 @@ def forwardFetchFeed():
     dictParameters = request.get_json()
     return jsonify(attemptFetchFeed(dictParameters['identifier']))
 
+@app.route("/fetch_level", methods=['POST'])
+def forwardFetchLevel():
+    dictParameters = request.get_json()
+    return jsonify(attemptFetchLevel(dictParameters['identifier'], dictParameters['username']))
+
 def main():
     app.run(debug=True, port=5000)
 

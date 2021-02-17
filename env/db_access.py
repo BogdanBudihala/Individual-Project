@@ -30,7 +30,7 @@ class DBManager(object):
             values (%s,%s,%s,%s,%s)''', (identifier, pairedAcc, title, location, desc)
         )
         self.__curs.execute(
-            '''insert into employee(paired_account, paired_company) values (%s,%s)''',
+            '''insert into employee(paired_account, paired_company, root_level) values (%s,%s,2)''',
             (pairedAcc, identifier)
         )
         self.__conn.commit()
@@ -272,6 +272,14 @@ class DBManager(object):
             FH.text_message, (select avatar from workeravatar where paired_account = FH.paired_account)
             from feedhistory FH where FH.paired_company = %s order by FH.post_time desc''', (identifier,))
         return self.__curs.fetchall()
+
+    def fetchPrivilegeLevel(self, identifier, username):
+        self.__curs.execute('''select root_level from employee where paired_account = %s and paired_company = %s''',
+                            (username, identifier))
+        result = self.__curs.fetchone()
+        if result is None:
+            raise Exception("0,User is not an active employee of the company")
+        return result[0]
 
 
 '''
